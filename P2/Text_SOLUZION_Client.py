@@ -162,7 +162,7 @@ except Exception as e:
   print(e)
   exit(1)
 """
-import Missionaries as PROBLEM
+import InstantInsanity as PROBLEM
 OPERATORS=PROBLEM.OPERATORS
 STATE_STACK = []
       

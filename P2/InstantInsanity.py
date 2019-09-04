@@ -82,8 +82,8 @@ class Cube:
 class State:
   def __init__(self, old=None):
     self.cubes=[Cube() for i in range(4)]
-    if old:
-      self.cube=old.cube
+    if old!=None:
+      self.cubes=old.cubes
   def can_move(self):
     return True
 
@@ -117,8 +117,8 @@ class State:
 
   def __str__(self):
     string=""
-    for cube in cubes:
-      string.join(str(cube))
+    for cube in self.cubes:
+      string=string.join(str(cube))
     return string
 
   def __hash__(self):
@@ -150,8 +150,8 @@ INITIAL_STATE = State()
 #</INITIAL_STATE>
 
 OPERATORS = [Operator("Farmer crosses the river with grain",
-  lambda s: s.can_move(False,False,True),
-  lambda s: s.move(False,False,True))]
+  lambda s: s.can_move(),
+  lambda s: s.move(0,1,0,0))]
 
 #</OPERATORS>
 
