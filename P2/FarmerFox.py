@@ -77,7 +77,8 @@ or with fox or chicken or grain.'''
   def is_goal(self):
     '''If all Ms and Cs are on the right, then s is a goal state.'''
     return self.fox_on_right and self.chicken_on_right and self.grain_on_right and self.boat_on_right
-
+  def isGoal(self):
+    return self.is_goal()
   def __eq__(self, s2):
     if s2==None: return False
     if self.fox_on_right != s2.chicken_on_right: return False

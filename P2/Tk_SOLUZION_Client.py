@@ -68,14 +68,13 @@ PURPOSE OF THIS MODULE:
     """
 
 # The following line is used in the Tk_SOLUZION_Client and the IDLE_Text_SOLUZION_Client.
-#problem_name = 'FarmerFox'
-problem_name = 'Missionaries'
-
+#problem_name = 'Missionaries2'
+problem_name='FarmerFox'
 def client_mainloop():
   print(TITLE)
   print(PROBLEM.PROBLEM_NAME+"; "+PROBLEM.PROBLEM_VERSION)
   global STEP, DEPTH, OPERATORS, CURRENT_STATE, STATE_STACK
-  CURRENT_STATE = PROBLEM.copy_state(PROBLEM.INITIAL_STATE)  
+  CURRENT_STATE = PROBLEM.State()  
 
   STATE_STACK = [CURRENT_STATE]
   STEP = 0
@@ -84,7 +83,7 @@ def client_mainloop():
   while(True):
     print("\nStep "+str(STEP)+", Depth "+str(DEPTH))
     print("CURRENT_STATE = "+str(CURRENT_STATE))
-    if PROBLEM.goal_test(CURRENT_STATE):
+    if CURRENT_STATE.is_goal():
       print('''CONGRATULATIONS!
 You have solved the problem by reaching a goal state.
 Do you wish to continue exploring?
@@ -147,7 +146,6 @@ def exit_client():
 
 def show_instructions():
   print('''\nINSTRUCTIONS:\n
-   GVBG
 The current state of your problem session represents where you
 are in the problem-solving process.  You can try to progress
 forward by applying an operator to change the state.

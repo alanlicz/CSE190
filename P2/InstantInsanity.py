@@ -2,12 +2,13 @@
 SOLUZION_VERSION = "0.2"
 PROBLEM_NAME = "Instant Insanity"
 PROBLEM_VERSION = "0.1"
-PROBLEM_AUTHORS = ['Marco.Xu']
-PROBLEM_CREATION_DATE = "29-JUL-2018"
+PROBLEM_AUTHORS = ['Marco.Xu','Alan ','Ethan ']
+PROBLEM_CREATION_DATE = "04-SEP-2019"
 
 #</METADATA>
 
 #<COMMON_DATA>
+colors=["Red","Green","Blue","White"]
 #</COMMON_DATA>
 
 #<COMMON_CODE>
@@ -23,7 +24,6 @@ from collections import deque
 #    _6_
 #
 #
-colors=["Red","Green","Blue","White"]
 
 class Cube:
   def __init__(self):
@@ -88,25 +88,30 @@ class State:
     return True
 
   def move(self,cubeindex,rotateyaw,rotatepitch,rotateroll):
+    """-1 for anticlockwise rotation, 0 for not rotating, 1 for clockwise rotation"""
     new = State(old=self)
     new.cubes[cubeindex].yawrotate(rotateyaw)
     new.cubes[cubeindex].yawrotate(rotatepitch)
     new.cubes[cubeindex].yawrotate(rotateroll)
 
     return new
-  def countcolors(side):
-    return 0
+
   def describe_state(self):
     # Produces a textual description of a state.
     # Might not be needed in normal operation with GUIs.
     return str(self)
 
   def is_goal(self):
-    colorcounts=[0,0,0,0]
     for i in range(4):
+      colorcounts=[0,0,0,0]
       for cube in self.cubes:
         colorcounts[cube.faces[i]]+=1
-
+      for c in colorcounts:
+        if c>1:
+          return False
+    return True
+  def isGoal(self):
+    return self.is_goal()
   def __eq__(self, s2):
     return self.__hash__()==s2.__hash__()
 
@@ -122,7 +127,7 @@ class State:
 def goal_test(s): return s.is_goal()
 
 def goal_message(s):
-  return "Congratulations on successfully guiding fox, chicken, grain, and farmer across the river!"
+  return "Congratulations on solving Instant Insanity!"
 
 def copy_state(s):
   return State(old=s)
@@ -144,25 +149,10 @@ class Operator:
 INITIAL_STATE = State()
 #</INITIAL_STATE>
 
-#<OPERATORS>
-phi0 = Operator("Farmer crosses alone",
-  lambda s: s.can_move(False,False,False),
-  lambda s: s.move(False,False,False))
-
-phi1 = Operator("Farmer crosses the river with fox",
-  lambda s: s.can_move(True,False,False),
-  lambda s: s.move(True,False,False))
-
-phi2 = Operator("Farmer crosses the river with chicken",
-  lambda s: s.can_move(False,True,False),
-  lambda s: s.move(False,True,False))
-
-phi3 = Operator("Farmer crosses the river with grain",
+OPERATORS = [Operator("Farmer crosses the river with grain",
   lambda s: s.can_move(False,False,True),
-  lambda s: s.move(False,False,True))
+  lambda s: s.move(False,False,True))]
 
-
-OPERATORS = [phi0, phi1, phi2, phi3]
 #</OPERATORS>
 
 #<GOAL_TEST> (optional)

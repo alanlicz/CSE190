@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""New_Text_SOLUZION_Client.py
- This file implements a simple "SOLUZION" client that
- permits a user ("problem solver") to explore a search tree
+"""Text_SOLUZION_Client.py
+ This file implements a simple interactive problem-solving
+ client. The user can interactively explore a problem space
  for a suitably-formulated problem.  The user only has to
  input single-character commands to control the search.
  Output is purely textual, and thus the complexity of a
@@ -10,6 +10,11 @@
  This client runs standalone -- no server connection.
  It thus provides a bare-bones means of testing a problem
  formulation.
+
+ This file corresponds to version 3 of the software.
+ It is compatible with problems whose formulations use
+ a class called State for representing problem states.
+ Last updated August 21, 2019.
 
 ----
 
@@ -31,12 +36,14 @@ PURPOSE OF THIS MODULE:
 
     """
 
+TITLE="Interactive Solving Client (Text SOLUZION Client, Version 3)"
+print(TITLE)
 
 def mainloop():
-  print(TITLE)
+  print("Problem name and version: ", end="")
   print(PROBLEM.PROBLEM_NAME+"; "+PROBLEM.PROBLEM_VERSION)
   global STEP, DEPTH, OPERATORS, CURRENT_STATE, STATE_STACK
-  CURRENT_STATE = PROBLEM.copy_state(PROBLEM.INITIAL_STATE)  
+  CURRENT_STATE = PROBLEM.State() # Create the initial state
 
   STATE_STACK = [CURRENT_STATE]
   STEP = 0
@@ -44,9 +51,12 @@ def mainloop():
   while(True):
     print("\nStep "+str(STEP)+", Depth "+str(DEPTH))
     print("CURRENT_STATE = "+str(CURRENT_STATE))
-    if PROBLEM.goal_test(CURRENT_STATE):
+    if CURRENT_STATE.isGoal():
       print('''CONGRATULATIONS!
 You have solved the problem by reaching a goal state.
+''')
+      print(CURRENT_STATE.goal_message())
+      print('''
 Do you wish to continue exploring?
 ''')
       answer = input("Y or N? >> ")
@@ -54,7 +64,6 @@ Do you wish to continue exploring?
       else: return
 
     applicability_vector = get_applicability_vector(CURRENT_STATE)
-    #print("applicability_vector = "+str(applicability_vector))
     for i in range(len(OPERATORS)):
       if applicability_vector[i]:
         print(str(i)+": "+OPERATORS[i].name)
@@ -90,10 +99,8 @@ Do you wish to continue exploring?
     else:
        print("Operator "+str(i)+" is not applicable to the current state.")
        continue
-    #print("Operator "+command+" not yet supported.")
 
 def get_applicability_vector(s):
-    #print("OPERATORS: "+str(OPERATORS))
     return [op.is_applicable(s) for op in OPERATORS]  
 
 def exit_client():
@@ -122,8 +129,6 @@ def apply_one_op():
     """Populate a popup menu with the names of currently applicable
        operators, and let the user choose which one to apply."""
     currently_applicable_ops = applicable_ops(CURRENT_STATE)
-    #print "Applicable operators: ",\
-    #    map(lambda o: o.name, currently_applicable_ops)
     print("Now need to apply the op")
 
 def applicable_ops(s):
@@ -133,6 +138,7 @@ def applicable_ops(s):
 
 import sys, importlib.util
 
+"""
 # Get the PROBLEM name from the command-line arguments
 
 if len(sys.argv)<2:
@@ -145,21 +151,20 @@ if len(sys.argv)<2:
   exit(1)
   
 problem_name = sys.argv[1]
-print("problem_name = "+problem_name)
+print("Problem folder name is: "+problem_name)
+
+print("Problem file name is: "+problem_name+".py")
 
 try:
   spec = importlib.util.spec_from_file_location(problem_name, problem_name+".py")
   PROBLEM = spec.loader.load_module()
-  spec.loader.exec_module(PROBLEM)
 except Exception as e:
   print(e)
   exit(1)
-
-#  import Mondrian as PROBLEM
-
+"""
+import Missionaries as PROBLEM
 OPERATORS=PROBLEM.OPERATORS
 STATE_STACK = []
-TITLE="Text_SOLUZION_Client (Version 0-1)"
       
 # The following is only executed if this module is being run as the main
 # program, rather than imported from another one.
