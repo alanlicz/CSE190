@@ -91,8 +91,8 @@ class State:
     """-1 for anticlockwise rotation, 0 for not rotating, 1 for clockwise rotation"""
     new = State(old=self)
     new.cubes[cubeindex].yawrotate(rotateyaw)
-    new.cubes[cubeindex].yawrotate(rotatepitch)
-    new.cubes[cubeindex].yawrotate(rotateroll)
+    new.cubes[cubeindex].pitchrotate(rotatepitch)
+    new.cubes[cubeindex].rollrotate(rotateroll)
 
     return new
 
@@ -163,28 +163,28 @@ OPERATORS = [Operator("Rotate First cube for 90 degree Clockwise in Yaw directio
   lambda s: s.move(1,1,0,0)),
   Operator("Rotate Second cube for 90 degree Clockwise in Pitch direction",
   lambda s: s.can_move(),
-  lambda s: s.move(1,1,0,0)),
+  lambda s: s.move(1,0,1,0)),
   Operator("Rotate Second cube for 90 degree Clockwise in Roll direction",
   lambda s: s.can_move(),
-  lambda s: s.move(1,1,0,0)),
+  lambda s: s.move(1,0,0,1)),
   Operator("Rotate Third cube for 90 degree Clockwise in Yaw direction",
   lambda s: s.can_move(),
   lambda s: s.move(2,1,0,0)),
   Operator("Rotate Third cube for 90 degree Clockwise in Pitch direction",
   lambda s: s.can_move(),
-  lambda s: s.move(2,1,0,0)),
+  lambda s: s.move(2,0,1,0)),
   Operator("Rotate Third cube for 90 degree Clockwise in Roll direction",
   lambda s: s.can_move(),
-  lambda s: s.move(2,1,0,0)),
+  lambda s: s.move(2,0,0,1)),
   Operator("Rotate Fourth cube for 90 degree Clockwise in Yaw direction",
   lambda s: s.can_move(),
   lambda s: s.move(3,1,0,0)),
   Operator("Rotate Fourth cube for 90 degree Clockwise in Pitch direction",
   lambda s: s.can_move(),
-  lambda s: s.move(3,1,0,0)),
+  lambda s: s.move(3,0,1,0)),
   Operator("Rotate Fourth cube for 90 degree Clockwise in Roll direction",
   lambda s: s.can_move(),
-  lambda s: s.move(3,1,0,0))]
+  lambda s: s.move(3,0,0,1))]
 #</OPERATORS>
 
 #<GOAL_TEST> (optional)
