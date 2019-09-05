@@ -20,14 +20,15 @@ def render_state(s):
         myFont = font.Font(family="Helvetica", size=28, weight="bold")
     print("In render_state, state is "+str(s))
     # Create the default array of colors
-    tan = (200,190,128)
-    blue = (100,100,255)
+    tan = (126,115,95)
+    blue = (0,120,215)
     brown = (100, 80, 0)
-    purple = (128, 0, 192)
+    purple = (177,70,194)
     cyan = (100, 200, 200)
-    orange=(242, 74, 2)
-    yellow=(255,221,0)
-    black=(20,20,20)
+    orange=(247, 99, 12)
+    yellow=(255,185,0)
+    black=(76,74,72)
+    red=(232,17,35)
     row = [tan]*2 + [blue]*4 + [tan]*2
     the_color_array = [row, row[:],row[:]]
     # Now create the default array of string labels.
@@ -53,10 +54,10 @@ def render_state(s):
         the_color_array[0][0]=orange
         the_string_array[0][0]="Fox"
     if s.chicken_on_right:
-        the_color_array[1][7]=black
+        the_color_array[1][7]=red
         the_string_array[1][7]="Chicken"
     else:
-        the_color_array[1][0]=black
+        the_color_array[1][0]=red
         the_string_array[1][0]="Chicken"
     if s.grain_on_right:
         the_color_array[2][7]=purple

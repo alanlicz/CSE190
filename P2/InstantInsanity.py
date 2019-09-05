@@ -74,7 +74,7 @@ class Cube:
   def __str__(self):
     return "\n      ["+colors[self.faces[4]]+"]\n"+"["+colors[self.faces[0]]+"]"+\
       "["+colors[self.faces[1]]+"]"+"["+colors[self.faces[2]]+"]"+"["+colors[self.faces[3]]+"]"+\
-        "\n      ["+colors[self.faces[5]]+"]\n"
+        "\n      ["+colors[self.faces[5]]+"]"
   def __hash__(self):
     return (str(self)).__hash__()
 
@@ -82,7 +82,7 @@ class Cube:
 class State:
   def __init__(self, old=None):
     self.cubes=[Cube() for i in range(4)]
-    if old!=None:
+    if old:
       self.cubes=old.cubes
   def can_move(self):
     return True
@@ -118,7 +118,7 @@ class State:
   def __str__(self):
     string=""
     for cube in self.cubes:
-      string=string.join(str(cube))
+      string=string+str(cube)
     return string
 
   def __hash__(self):
@@ -149,10 +149,42 @@ class Operator:
 INITIAL_STATE = State()
 #</INITIAL_STATE>
 
-OPERATORS = [Operator("Farmer crosses the river with grain",
+OPERATORS = [Operator("Rotate First cube for 90 degree Clockwise in Yaw direction",
   lambda s: s.can_move(),
-  lambda s: s.move(0,1,0,0))]
-
+  lambda s: s.move(0,1,0,0)),
+  Operator("Rotate First cube for 90 degree Clockwise in Pitch direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(0,0,1,0)),
+  Operator("Rotate First cube for 90 degree Clockwise in Roll direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(0,0,0,1)),
+  Operator("Rotate Second cube for 90 degree Clockwise in Yaw direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(1,1,0,0)),
+  Operator("Rotate Second cube for 90 degree Clockwise in Pitch direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(1,1,0,0)),
+  Operator("Rotate Second cube for 90 degree Clockwise in Roll direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(1,1,0,0)),
+  Operator("Rotate Third cube for 90 degree Clockwise in Yaw direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(2,1,0,0)),
+  Operator("Rotate Third cube for 90 degree Clockwise in Pitch direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(2,1,0,0)),
+  Operator("Rotate Third cube for 90 degree Clockwise in Roll direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(2,1,0,0)),
+  Operator("Rotate Fourth cube for 90 degree Clockwise in Yaw direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(3,1,0,0)),
+  Operator("Rotate Fourth cube for 90 degree Clockwise in Pitch direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(3,1,0,0)),
+  Operator("Rotate Fourth cube for 90 degree Clockwise in Roll direction",
+  lambda s: s.can_move(),
+  lambda s: s.move(3,1,0,0))]
 #</OPERATORS>
 
 #<GOAL_TEST> (optional)
