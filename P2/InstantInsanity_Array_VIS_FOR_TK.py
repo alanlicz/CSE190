@@ -16,7 +16,7 @@ cyan = (100, 200, 200)
 orange=(247, 99, 12)
 yellow=(255,185,0)
 black=(76,74,72)
-
+background=(126,115,95)
 cube_colors=[(232,17,35),(16,124,16),(0,120,215),(220,220,220)]
 
 def initialize_vis():
@@ -42,7 +42,7 @@ def render_state(s):
     print("In render_state, state is "+str(s))
     # Create the default array of colors
 
-    row = [tan for i in range(12)]
+    row = [background for i in range(12)]
     the_color_array = [row[:] for i in range(15)]
     # Now create the default array of string labels.
     row = ['' for i in range(12)]
