@@ -54,12 +54,30 @@ def render_state(s):
     the_color_array[1][6] = orange
     the_color_array[1][7] = orange
     the_string_array[1][6] = "Sides"
+
     for i in range(4):
         display_cube(s.cubes[i], the_color_array, the_string_array, (2, 1 + i * 4))
         the_color_array[2][6 + i] = black
         the_string_array[2][6 + i] = str(sides[i])
-        for j in range(4):
-            the_color_array[3 + j][6 + i] = cube_colors[s.cubes[j].faces[i]]
+        the_color_array[3][6] = cube_colors[s.cubes[0].faces[0]]
+        the_color_array[3][7] = cube_colors[s.cubes[0].faces[4]]
+        the_color_array[3][8] = cube_colors[s.cubes[0].faces[2]]
+        the_color_array[3][9] = cube_colors[s.cubes[0].faces[5]]
+
+        the_color_array[4][6] = cube_colors[s.cubes[1].faces[0]]
+        the_color_array[4][7] = cube_colors[s.cubes[1].faces[4]]
+        the_color_array[4][8] = cube_colors[s.cubes[1].faces[2]]
+        the_color_array[4][9] = cube_colors[s.cubes[1].faces[5]]
+
+        the_color_array[5][6] = cube_colors[s.cubes[2].faces[0]]
+        the_color_array[5][7] = cube_colors[s.cubes[2].faces[4]]
+        the_color_array[5][8] = cube_colors[s.cubes[2].faces[2]]
+        the_color_array[5][9] = cube_colors[s.cubes[2].faces[5]]
+
+        the_color_array[6][6] = cube_colors[s.cubes[3].faces[0]]
+        the_color_array[6][7] = cube_colors[s.cubes[3].faces[4]]
+        the_color_array[6][8] = cube_colors[s.cubes[3].faces[2]]
+        the_color_array[6][9] = cube_colors[s.cubes[3].faces[5]]
     # Adjust colors and strings to match the state.
 
     caption = "Current state of the puzzle. Textual version: " + str(s)
