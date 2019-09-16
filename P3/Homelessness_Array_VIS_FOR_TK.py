@@ -1,7 +1,10 @@
 import show_state_array as ssa
 from show_state_array import initialize_tk, state_array, state_display, test
 import tkinter as tk
-from tkinter import font
+from tkinter import font, PhotoImage
+import os
+import numpy as np
+from PIL import Image, ImageDraw
 
 myFont = None
 
@@ -78,6 +81,12 @@ def initialize_vis():
     ssa.STATE_WINDOW.canvas.create_text(600, 150, text="Employment Rate")
     ssa.STATE_WINDOW.canvas.create_text(600, 180, text="Popularity")
     ssa.STATE_WINDOW.canvas.create_text(600, 210, text="Homeless People")
+    gif1 = PhotoImage(file='Op1.gif')
+    # put gif image on canvas
+    # pic's upper left corner (NW) on the canvas is at x=50 y=10
+    ssa.STATE_WINDOW.canvas.create_image(50, 10, image=gif1, anchor=tk.NW)
+    # img = PhotoImage(file="Op1.gif")
+    # ssa.STATE_WINDOW.canvas.create_image(100, 100, image=img)
 
 
 def render_state(s):
@@ -100,4 +109,5 @@ def render_state(s):
     employment_rate_bar.update(s.employment_rate / 300)
     popularity_bar.update(s.popularity / 200)
     homeless_people_bar.update(s.homeless_people / 50000)
+
 
