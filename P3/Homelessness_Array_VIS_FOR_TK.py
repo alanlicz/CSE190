@@ -1,10 +1,9 @@
 import show_state_array as ssa
 from show_state_array import initialize_tk, state_array, state_display, test
 import tkinter as tk
-from tkinter import font, PhotoImage
-import os
-import numpy as np
-from PIL import Image, ImageDraw
+from tkinter import font
+from PIL import Image
+from PIL import ImageTk
 
 myFont = None
 
@@ -22,6 +21,10 @@ yellow = (255, 185, 0)
 black = (76, 74, 72)
 green = (20, 255, 20)
 background = (126, 115, 95)
+
+
+def rgb2hex(rgb):
+    return "#%02x%02x%02x" % rgb
 
 
 class StatusBar:
@@ -44,9 +47,27 @@ class StatusBar:
                                                                  self.y0 + self.width, fill=rgb2hex(self.fill_color))
 
 
-def rgb2hex(rgb):
-    return "#%02x%02x%02x" % rgb
+class Text:
+    def __init__(self, x0, y0, text_info):
+        self.x0 = x0
+        self.y0 = y0
+        self.text_info = text_info
+        ssa.STATE_WINDOW.canvas.create_text(x0, y0, text=text_info)
 
+
+"""
+class Button:
+    def __init__(self, container, text, image):
+        self.container = container
+        self.text = text
+        self.image = image
+        # self.command = command
+        self.button = tk.Button(master=self.container, text=self.text, image=self.image)
+        self.button.tk.place()
+"""
+
+
+images = []  # Store images to keep references to images to prevent garbage collection
 
 table = None
 money_bar = None
@@ -55,38 +76,66 @@ health_points_bar = None
 employment_rate_bar = None
 popularity_bar = None
 homeless_people_bar = None
-# money_bar_fill = None
+sf_map_gif = None
+button1 = None
 
 
 def initialize_vis():
     global table
-
+    global sf_map_gif
     global money_bar
     global housing_price_bar
     global health_points_bar
     global employment_rate_bar
     global popularity_bar
     global homeless_people_bar
+    global button1
+
     initialize_tk(WIDTH, HEIGHT, TITLE)
     table = ssa.STATE_WINDOW.canvas.create_rectangle(0, 0, WIDTH, HEIGHT, fill=rgb2hex(background))
-    money_bar = StatusBar(700, 50, 200, 20, blue, green)
-    housing_price_bar = StatusBar(700, 80, 200, 20, blue, yellow)
-    health_points_bar = StatusBar(700, 110, 200, 20, blue, purple)
-    employment_rate_bar = StatusBar(700, 140, 200, 20, blue, cyan)
-    popularity_bar = StatusBar(700, 170, 200, 20, blue, orange)
-    homeless_people_bar = StatusBar(700, 200, 200, 20, blue, tan)
-    ssa.STATE_WINDOW.canvas.create_text(600, 60, text="Money")
-    ssa.STATE_WINDOW.canvas.create_text(600, 90, text="Housing Price")
-    ssa.STATE_WINDOW.canvas.create_text(600, 120, text="Health Points")
-    ssa.STATE_WINDOW.canvas.create_text(600, 150, text="Employment Rate")
-    ssa.STATE_WINDOW.canvas.create_text(600, 180, text="Popularity")
-    ssa.STATE_WINDOW.canvas.create_text(600, 210, text="Homeless People")
-    gif1 = PhotoImage(file='Op1.gif')
-    # put gif image on canvas
-    # pic's upper left corner (NW) on the canvas is at x=50 y=10
-    ssa.STATE_WINDOW.canvas.create_image(50, 10, image=gif1, anchor=tk.NW)
-    # img = PhotoImage(file="Op1.gif")
-    # ssa.STATE_WINDOW.canvas.create_image(100, 100, image=img)
+    money_bar = StatusBar(800, 20, 200, 20, blue, green)
+    housing_price_bar = StatusBar(800, 50, 200, 20, blue, yellow)
+    health_points_bar = StatusBar(800, 80, 200, 20, blue, purple)
+    employment_rate_bar = StatusBar(800, 110, 200, 20, blue, cyan)
+    popularity_bar = StatusBar(800, 140, 200, 20, blue, orange)
+    homeless_people_bar = StatusBar(800, 170, 200, 20, blue, tan)
+
+    Text(680, 30, "Money")
+    Text(680, 60, "Housing Price")
+    Text(680, 90, "Health Points")
+    Text(680, 120, "Employment Rate")
+    Text(680, 150, "Popularity")
+    Text(680, 180, "Homeless People")
+
+    tempimg = Image.open("Op1.gif")
+    tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
+    tempimg = ImageTk.PhotoImage(tempimg)
+    button1 = tk.Button(ssa.STATE_WINDOW, text="test", image=tempimg)
+    button1.tk.pack()
+
+    try:
+        sf_map_gif = Image.open("SFMap.png")
+        sf_map_gif = sf_map_gif.resize((500, 500), Image.ANTIALIAS)
+        sf_map_gif = ImageTk.PhotoImage(sf_map_gif)
+
+    except Exception as e:
+        print("Failed to Load SF Map!")
+        print(e)
+    images.append(sf_map_gif)  # Store images to keep references to images to prevent garbage collection
+    try:
+        ssa.STATE_WINDOW.canvas.create_image(270, 270, image=sf_map_gif, anchor=tk.CENTER)
+    except Exception as e:
+        print("Failed to Display SF Map!")
+        print(e)
+
+
+    """
+    op1_img = Image.open("Op15.png")
+    op1_img = op1_img.resize((500, 500), Image.ANTIALIAS)
+    op1_img = ImageTk.PhotoImage(op1_img)
+    images.append(op1_img)
+    op1 = ssa.STATE_WINDOW.canvas.create_image(660, 1000, image=op1_img, anchor=tk.CENTER)
+    """
 
 
 def render_state(s):
@@ -103,11 +152,9 @@ def render_state(s):
     global myFont
     if not myFont:
         myFont = tk.font.Font(family="Helvetica", size=18, weight="bold")
-    money_bar.update(s.money / 15000000)
+    money_bar.update(s.money / 5000000000)
     housing_price_bar.update(s.housing_price / 2000)
     health_points_bar.update(s.health_points / 200)
     employment_rate_bar.update(s.employment_rate / 300)
     popularity_bar.update(s.popularity / 200)
     homeless_people_bar.update(s.homeless_people / 50000)
-
-
