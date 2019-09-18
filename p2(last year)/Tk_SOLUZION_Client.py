@@ -7,8 +7,8 @@
  Output is purely textual, and thus the complexity of a
  graphical interface is avoided.
 
- This client runs standalone -- no server connection.
- It thus provides a bare-bones means of testing a problem
+ This client runs standalone -- no erver connection.
+ It thus provides a bare-bones means of testing a problems
  formulation.
 
  Tk is the graphics and GUI Toolkit that ships with Python.
@@ -37,7 +37,7 @@
  Status: Started on Aug. 2.
    Aug. 3. Basic array graphics is working. But now we
    need the strings and advanced options.
-
+   
    Need example file Missionaries_Array_VIS_FOR_TK.py.
    Need code to display a color array, with defaults if anything
       is not provided.
@@ -50,7 +50,7 @@
 ----
 
 PURPOSE OF THIS MODULE:
-
+        
     This module supports what we can call "interactive state
     space search".  Whereas traditional search algorithms in the
     context of artificial intelligence work completely automatically,
@@ -68,6 +68,7 @@ PURPOSE OF THIS MODULE:
     """
 
 # The following line is used in the Tk_SOLUZION_Client and the IDLE_Text_SOLUZION_Client.
+# problem_name = 'FarmerFox'
 problem_name = 'Missionaries'
 
 
@@ -75,20 +76,20 @@ def client_mainloop():
     print(TITLE)
     print(PROBLEM.PROBLEM_NAME + "; " + PROBLEM.PROBLEM_VERSION)
     global STEP, DEPTH, OPERATORS, CURRENT_STATE, STATE_STACK
-    CURRENT_STATE = PROBLEM.State()
+    CURRENT_STATE = PROBLEM.copy_state(PROBLEM.INITIAL_STATE)
 
     STATE_STACK = [CURRENT_STATE]
     STEP = 0
     DEPTH = 0
     PROBLEM.render_state(CURRENT_STATE)
-    while (True):
+    while True:
         print("\nStep " + str(STEP) + ", Depth " + str(DEPTH))
         print("CURRENT_STATE = " + str(CURRENT_STATE))
-        if CURRENT_STATE.is_goal():
+        if PROBLEM.goal_test(CURRENT_STATE):
             print('''CONGRATULATIONS!
-You have solved the problem by reaching a goal state.
-Do you wish to continue exploring?
-''')
+            You have solved the problem by reaching a goal state.
+            Do you wish to continue exploring?
+            ''')
             answer = input("Y or N? >> ")
             if answer == "Y" or answer == "y":
                 print("OK, continue")
@@ -115,7 +116,8 @@ Do you wish to continue exploring?
 
         if command == "H" or command == "h": show_instructions(); continue
         if command == "Q" or command == "q": break
-        if command == "": continue
+        if command == "":
+            continue
         try:
             i = int(command)
         except:
@@ -151,6 +153,7 @@ def exit_client():
 
 def show_instructions():
     print('''\nINSTRUCTIONS:\n
+   GVBG
 The current state of your problem session represents where you
 are in the problem-solving process.  You can try to progress
 forward by applying an operator to change the state.
@@ -187,14 +190,14 @@ import sys, importlib.util
 
 if len(sys.argv) < 2:
     """ The following few lines go with the LINUX version of the text client.
-    print('''
-         Usage: 
-  ./IDLE_Text_SOLUZION_Client <PROBLEM NAME>
-         For example:
-  ./IDLE_Text_SOLUZION_Client Missionaries
-    ''')
-    exit(1)
-    """
+  print('''
+       Usage: 
+./IDLE_Text_SOLUZION_Client <PROBLEM NAME>
+       For example:
+./IDLE_Text_SOLUZION_Client Missionaries
+  ''')
+  exit(1)
+  """
     sys.argv = ['Tk_SOLUZION_Client.py', problem_name]  # IDLE and Tk version only.
     # Sets up sys.argv as if it were coming in on a Linux command line.
 

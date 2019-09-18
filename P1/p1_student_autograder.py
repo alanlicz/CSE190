@@ -1,4 +1,4 @@
-import assignment as student
+import alanli_p1 as student
 
 '''
 This file is the student autograder program for
@@ -17,25 +17,27 @@ submitted your assignment.
 
 '''
 
-print("Student autograder report for "+student.FIRST_NAME+" "+student.LAST_NAME)
+print("Student autograder report for " + student.FIRST_NAME + " " + student.LAST_NAME)
 
 POINTS = 0
 
+
 def test1(ex_no, fn, arg1, correct_answer, points):
-  global POINTS
-  try:
-     st_answer = fn(arg1)
-     if st_answer==correct_answer:
-       POINTS += points
-       print("Correct. For input, "+str(arg1)+", output is, "+str(st_answer))
-     else:
-       print("In Exercise "+str(ex_no)+", the result was not correct.")
-       print("For the input, "+str(arg1)+", the output should be, "+str(correct_answer))
-       print("Your function returned: "+str(st_answer))
-  except Exception as e:
-    print("An exception was raised, while testing this exercise.")
-    print(e)
-  print() 
+    global POINTS
+    try:
+        st_answer = fn(arg1)
+        if st_answer == correct_answer:
+            POINTS += points
+            print("Correct. For input, " + str(arg1) + ", output is, " + str(st_answer))
+        else:
+            print("In Exercise " + str(ex_no) + ", the result was not correct.")
+            print("For the input, " + str(arg1) + ", the output should be, " + str(correct_answer))
+            print("Your function returned: " + str(st_answer))
+    except Exception as error:
+        print("An exception was raised, while testing this exercise.")
+        print(error)
+    print()
+
 
 print("EXERCISE 1:")
 test1(1, student.double, 5, 10, 1)
@@ -49,13 +51,13 @@ test1(3, student.please_repeat_that, "Let's have fun.", "Let's have fun. -- I sa
 print("EXERCISE 4:")
 # EXERCISE 4:
 
-die_result = student. roll_die()
-if die_result in [1,2,3,4,5,6]:
-  print("roll_die worked. The result was "+str(die_result))
-  POINTS += 2
+dice_result = student.roll_die()
+if dice_result in [1, 2, 3, 4, 5, 6]:
+    print("roll_die worked. The result was " + str(dice_result))
+    POINTS += 2
 else:
-  print("roll_die did not work.")
-  print("It did not return one of the numbers 1, 2, 3, 4, 5, or 6.")
+    print("roll_die did not work.")
+    print("It did not return one of the numbers 1, 2, 3, 4, 5, or 6.")
 print()
 
 print("EXERCISE 5:")
@@ -69,34 +71,34 @@ test1(6, student.makepal, [1, 5], [1, 5, 5, 1], 2)
 print("EXERCISE 7:")
 # EXERCISE 7:
 try:
-  jane_eyre = student.Movie('romance', 'Jane Eyre', 'Stevenson',\
-       '1943', 'English', ['Orson Wells','Joan Fontaine'], \
-       'After a harsh childhood, orphan Jane Eyre is hired '+\
-       'by Edward Rochester, the brooding lord of a mysterious '+\
-       'manor house, to care for his young daughter.')
-  print("Instantiation of the Movie class succeeded.")
-  POINTS += 2
+    jane_eyre = student.Movie('romance', 'Jane Eyre', 'Stevenson', \
+                              '1943', 'English', ['Orson Wells', 'Joan Fontaine'], \
+                              'After a harsh childhood, orphan Jane Eyre is hired ' + \
+                              'by Edward Rochester, the brooding lord of a mysterious ' + \
+                              'manor house, to care for his young daughter.')
+    print("Instantiation of the Movie class succeeded.")
+    POINTS += 2
 except Exception as e:
-  print("An exception was raised, while testing the Movie class.")
-  print(e)
+    print("An exception was raised, while testing the Movie class.")
+    print(e)
 print()
 
 try:
-  romance_movies = student.by_genre([jane_eyre], 'romance')
-  horror_movies = student.by_genre([jane_eyre], 'horror')
-  if romance_movies[0]==jane_eyre:
-     print("First test of by_genre passes.")
-     POINTS += 2
-  else:
-     print("First test of by_genre fails.")
-  if horror_movies[0]==[]:
-     print("Second test of by_genre passes.")
-     POINTS += 2
-  else:
-     print("Second test of by_genre fails.")
+    romance_movies = student.by_genre([jane_eyre], 'romance')
+    horror_movies = student.by_genre([jane_eyre], 'horror')
+    if romance_movies[0] == jane_eyre:
+        print("First test of by_genre passes.")
+        POINTS += 2
+    else:
+        print("First test of by_genre fails.")
+    if not horror_movies:
+        print("Second test of by_genre passes.")
+        POINTS += 2
+    else:
+        print("Second test of by_genre fails.")
 except Exception as e:
-  print("An exception was raised, while testing the by_genre function.")
-  print(e)
+    print("An exception was raised, while testing the by_genre function.")
+    print(e)
 print()
 
 print("EXERCISE 8:")
@@ -118,5 +120,5 @@ test1(8, fn1, 3, False, 1)
 print("Next, with p=5, n=15, m=1")
 test1(8, fn1, 5, False, 1)
 
-print("Your score will be at least "+str(POINTS))
+print("Your score will be at least " + str(POINTS))
 print("The actual number of possible points will be announced elsewhere.")

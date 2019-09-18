@@ -19,7 +19,7 @@ class CanvasDemo:
         tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
         tempimg = ImageTk.PhotoImage(tempimg)
         btRectangle = Button(frame, text="rectangle", command=self.displayRect, image=tempimg)
-        btOval = Button(frame, text="Oval", command=self.displayOval)
+        btOval = Button(frame, text="Oval", command=self.displayOval, fg="black")
         btArc = Button(frame, text="Arc", command=self.displayArc)
         btPolygon = Button(frame, text="Polygon", command=self.displayPolygon)
         btLine = Button(frame, text="Line", command=self.displayLine)
@@ -40,27 +40,27 @@ class CanvasDemo:
     def displayRect(self):
         self.canvas.create_rectangle(10, 10, 190, 90, tags="rect")
 
-    # fill填充oval的颜色
     def displayOval(self):
         self.canvas.create_oval(10, 10, 190, 90, fill="red", tags="oval")
 
-    # start为开始的度数，extent为要转的度数.全部以逆时针为正方向，0为x轴正方向
+    # start represent the starting angle，extent is the degree you want to turn. Default counterclockwise
     def displayArc(self):
         self.canvas.create_arc(10, 10, 190, 90, start=0, extent=90, width=8, fill="red", tags="arc")
 
     def displayPolygon(self):
         self.canvas.create_polygon(10, 10, 190, 90, 10, 90, tags="polygon")
 
-    # arrow表示line指向，activefill：当鼠标在line上时出现的特定风格，本例中鼠标移动到第二个line上时line变蓝
+    # arrow indicate the direction，activefill：showing special style, when mouse move to the second line,
+    # it will appear blue
     def displayLine(self):
         self.canvas.create_line(10, 10, 190, 90, fill="red", tags="line")
         self.canvas.create_line(10, 90, 190, 10, width=9, arrow="first", activefill="blue", tags="line")
 
-    # font定义字体（字体名，大小，风格）
+    # font define the typeface(name, size, style)
     def displayString(self):
         self.canvas.create_text(60, 40, text="hi, i am string", font="time 10 bold underline", tags="string")
 
-    # delete方法通过tags参数从画布上删除图形
+    # delete using tag argument to delete all the graph
     def displayClear(self):
         self.canvas.delete("rect", "oval", "arc", "polygon", "line", "string")
 

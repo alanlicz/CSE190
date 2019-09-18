@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""Tk_SOLUZION_Client.py
- This file implements a simple "SOLUZION" client that
- permits a user ("problem solver") to explore a search tree
+"""Text_SOLUZION_Client.py
+ This file implements a simple interactive problem-solving
+ client. The user can interactively explore a problem space
  for a suitably-formulated problem.  The user only has to
  input single-character commands to control the search.
  Output is purely textual, and thus the complexity of a
@@ -11,41 +11,10 @@
  It thus provides a bare-bones means of testing a problem
  formulation.
 
- Tk is the graphics and GUI Toolkit that ships with Python.
- This client program uses Tk only for its graphics, setting up
- a graphics window that is used for the display of each state
- of the problem-solution process.
-
- To take advantage of this, the problem formulation file should
- check to see if the global USE_TK_GRAPHICS is True, and if so, it
- should import a visualization file with a name similar to:
- Missionaries_Array_VIS_FOR_TK.py.
-
- One technical challenge in creating this client is that Tk graphics
- requires that the main execution thread be devoted to Tk,
- which means that a normal text-input loop cannot easily be
- sync'd with Tk.  The solution is to use a separate thread for
- the text loop and have it make calls re-draw the Tk graphic.
- Tk still runs the mainloop method in the main thread, which
- not only is there to handle any GUI events (but there are not any
- in this program) but also just to show the graphics window.
- If we don't call the mainloop method, the Tk graphic window
- will not show up until the rest of the program completely
- finishes, which is useless.  So there is a separate thread
- here for the user interaction loop.
-
- Status: Started on Aug. 2.
-   Aug. 3. Basic array graphics is working. But now we
-   need the strings and advanced options.
-
-   Need example file Missionaries_Array_VIS_FOR_TK.py.
-   Need code to display a color array, with defaults if anything
-      is not provided.
-   Need code to display a corresponding string array.
-      consider options to include column headers, footers, and
-      row titles on left and right.
-   Add caption feature.
-   The file for these features:  show_state_array.py
+ This file corresponds to version 3 of the software.
+ It is compatible with problems whose formulations use
+ a class called State for representing problem states.
+ Last updated August 21, 2019.
 
 ----
 
@@ -67,26 +36,28 @@ PURPOSE OF THIS MODULE:
 
     """
 
-# The following line is used in the Tk_SOLUZION_Client and the IDLE_Text_SOLUZION_Client.
-problem_name = 'Missionaries'
+TITLE = "Interactive Solving Client (Text SOLUZION Client, Version 3)"
+print(TITLE)
 
 
-def client_mainloop():
-    print(TITLE)
+def mainloop():
+    print("Problem name and version: ", end="")
     print(PROBLEM.PROBLEM_NAME + "; " + PROBLEM.PROBLEM_VERSION)
     global STEP, DEPTH, OPERATORS, CURRENT_STATE, STATE_STACK
-    CURRENT_STATE = PROBLEM.State()
+    CURRENT_STATE = PROBLEM.State()  # Create the initial state
 
     STATE_STACK = [CURRENT_STATE]
     STEP = 0
     DEPTH = 0
-    PROBLEM.render_state(CURRENT_STATE)
     while (True):
         print("\nStep " + str(STEP) + ", Depth " + str(DEPTH))
         print("CURRENT_STATE = " + str(CURRENT_STATE))
-        if CURRENT_STATE.is_goal():
+        if CURRENT_STATE.isGoal():
             print('''CONGRATULATIONS!
 You have solved the problem by reaching a goal state.
+''')
+            print(CURRENT_STATE.goal_message())
+            print('''
 Do you wish to continue exploring?
 ''')
             answer = input("Y or N? >> ")
@@ -96,7 +67,6 @@ Do you wish to continue exploring?
                 return
 
         applicability_vector = get_applicability_vector(CURRENT_STATE)
-        # print("applicability_vector = "+str(applicability_vector))
         for i in range(len(OPERATORS)):
             if applicability_vector[i]:
                 print(str(i) + ": " + OPERATORS[i].name)
@@ -108,9 +78,7 @@ Do you wish to continue exploring?
                 STEP += 1
             else:
                 print("You're already back at the initial state.")
-                continue
             CURRENT_STATE = STATE_STACK[-1]
-            PROBLEM.render_state(CURRENT_STATE)
             continue
 
         if command == "H" or command == "h": show_instructions(); continue
@@ -128,18 +96,15 @@ Do you wish to continue exploring?
         if applicability_vector[i]:
             CURRENT_STATE = OPERATORS[i].apply(CURRENT_STATE)
             STATE_STACK.append(CURRENT_STATE)
-            PROBLEM.render_state(CURRENT_STATE)
             DEPTH += 1
             STEP += 1
             continue
         else:
             print("Operator " + str(i) + " is not applicable to the current state.")
             continue
-        # print("Operator "+command+" not yet supported.")
 
 
 def get_applicability_vector(s):
-    # print("OPERATORS: "+str(OPERATORS))
     return [op.is_applicable(s) for op in OPERATORS]
 
 
@@ -170,8 +135,6 @@ def apply_one_op():
     """Populate a popup menu with the names of currently applicable
        operators, and let the user choose which one to apply."""
     currently_applicable_ops = applicable_ops(CURRENT_STATE)
-    # print "Applicable operators: ",\
-    #    map(lambda o: o.name, currently_applicable_ops)
     print("Now need to apply the op")
 
 
@@ -183,69 +146,37 @@ def applicable_ops(s):
 
 import sys, importlib.util
 
+"""
 # Get the PROBLEM name from the command-line arguments
 
-if len(sys.argv) < 2:
-    """ The following few lines go with the LINUX version of the text client.
-    print('''
-         Usage: 
-  ./IDLE_Text_SOLUZION_Client <PROBLEM NAME>
-         For example:
-  ./IDLE_Text_SOLUZION_Client Missionaries
-    ''')
-    exit(1)
-    """
-    sys.argv = ['Tk_SOLUZION_Client.py', problem_name]  # IDLE and Tk version only.
-    # Sets up sys.argv as if it were coming in on a Linux command line.
+if len(sys.argv)<2:
+  print('''
+       Usage: 
+./Text_SOLUZION_Client <PROBLEM NAME>
+       For example:
+./Text_SOLUZION_Client Missionaries
+  ''')
+  exit(1)
 
 problem_name = sys.argv[1]
-print("problem_name = " + problem_name)
+print("Problem folder name is: "+problem_name)
+
+print("Problem file name is: "+problem_name+".py")
 
 try:
-    spec = importlib.util.spec_from_file_location(problem_name, problem_name + ".py")
-    PROBLEM = spec.loader.load_module()
-    spec.loader.exec_module(PROBLEM)
+  spec = importlib.util.spec_from_file_location(problem_name, problem_name+".py")
+  PROBLEM = spec.loader.load_module()
 except Exception as e:
-    print(e)
-    exit(1)
-
-try:
-    spec = importlib.util.spec_from_file_location(problem_name + '_Array_VIS_FOR_TK',
-                                                  problem_name + '_Array_VIS_FOR_TK.py')
-    VIS = spec.loader.load_module()
-    spec.loader.exec_module(VIS)
-    print("Using TK vis routine")
-    PROBLEM.render_state = VIS.render_state
-    VIS.initialize_vis()
-except Exception as e:
-    print(e)
-    exit(1)
+  print(e)
+  exit(1)
+"""
+import Missionaries as PROBLEM
 
 OPERATORS = PROBLEM.OPERATORS
 STATE_STACK = []
-TITLE = "Tk_SOLUZION_Client (Version 0-1)"
-
-import threading
-
-
-class Client(threading.Thread):
-    def __init__(self, tk_root):
-        self.root = tk_root
-        threading.Thread.__init__(self)
-        self.start()
-
-    def run(self):
-        client_mainloop()
-        self.root.quit()
-        exit(0)
-        # self.root.update()
-
 
 # The following is only executed if this module is being run as the main
 # program, rather than imported from another one.
 if __name__ == '__main__':
-    import show_state_array
-
-    client = Client(show_state_array.STATE_WINDOW)
-    show_state_array.STATE_WINDOW.mainloop()
+    mainloop()
     print("The session is finished.")

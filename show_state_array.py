@@ -39,35 +39,6 @@ class state_array:
         self.caption = caption
         self.ncols = len(self.color_array[0])
         self.nrows = len(self.color_array)
-        row = [background for i in range(self.ncols)]
-        self.color_item_array = [row[:] for i in range(self.nrows)]
-        row = ['' for i in range(self.ncols)]
-        self.string_item_array = [row[:] for i in range(self.nrows)]
-
-        global STATE_WINDOW
-        x0 = 0
-        y0 = 0
-        cellw = STATE_WINDOW.width / self.ncols
-        cellh = STATE_WINDOW.height / self.nrows
-        i = 0
-        for r in self.color_array:
-            j = 0
-            for c in r:
-                # print(c, end=' ')
-                tk_rgb = "#%02x%02x%02x" % c
-                self.color_item_array[i][j] = STATE_WINDOW.canvas.create_rectangle(x0 + j * cellw, y0 + i * cellh,
-                                                                                   x0 + (j + 1) * cellw,
-                                                                                   y0 + (i + 1) * cellh,
-                                                                                   fill=tk_rgb)
-                if self.string_array:
-                    self.string_item_array[i][j] = STATE_WINDOW.canvas.create_text(x0 + (j + 0.5) * cellw,
-                                                                                   y0 + (i + 0.5) * cellh,
-                                                                                   text=self.string_array[i][j],
-                                                                                   fill=self.text_color,
-                                                                                   font=self.text_font)
-                j += 1
-            i += 1
-            STATE_WINDOW.label.config(text=self.caption)
 
     def show(self):
         global STATE_WINDOW
@@ -75,18 +46,24 @@ class state_array:
         y0 = 0
         cellw = STATE_WINDOW.width / self.ncols
         cellh = STATE_WINDOW.height / self.nrows
+        # Set the width and height of the cell
         i = 0
         for r in self.color_array:
             j = 0
             for c in r:
                 # print(c, end=' ')
                 tk_rgb = "#%02x%02x%02x" % c
-                STATE_WINDOW.canvas.itemconfig(self.color_item_array[i][j], fill=tk_rgb)
+                STATE_WINDOW.canvas.create_rectangle(x0 + j * cellw, y0 + i * cellh,
+                                                     x0 + (j + 1) * cellw, y0 + (i + 1) * cellh,
+                                                     fill=tk_rgb)
                 if self.string_array:
-                    STATE_WINDOW.canvas.itemconfig(self.string_item_array[i][j], text=self.string_array[i][j],
-                                                   fill=self.text_color, font=self.text_font)
+                    STATE_WINDOW.canvas.create_text(x0 + (j + 0.5) * cellw, y0 + (i + 0.5) * cellh,
+                                                    text=self.string_array[i][j],
+                                                    fill=self.text_color,
+                                                    font=self.text_font)
                 j += 1
             i += 1
+            print()
         STATE_WINDOW.label.config(text=self.caption)
 
 
@@ -106,8 +83,7 @@ def initialize_tk(width=300, height=300, title='State Display Window'):
     root = tk.Tk()
     root.title(title)
     the_display = state_display(root, width=width, height=height)
-    the_display.pack()
-    # the_display.pack(fill="both", expand=True)
+    the_display.pack(fill="both", expand=True)
     STATE_WINDOW = the_display
     print("VIS initialization finished")
 

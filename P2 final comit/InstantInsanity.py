@@ -2,7 +2,7 @@
 SOLUZION_VERSION = "0.2"
 PROBLEM_NAME = "Instant Insanity"
 PROBLEM_VERSION = "0.1"
-PROBLEM_AUTHORS = ['Marco Xu', 'Alan Li', 'Ethan Jiang']
+PROBLEM_AUTHORS = ['Marco.Xu', 'Alan Li', 'Ethan Jiang']
 PROBLEM_CREATION_DATE = "04-SEP-2019"
 
 # </METADATA>

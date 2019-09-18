@@ -147,18 +147,18 @@ def initialize_vis():
     op17_button = Card("Rental Price Ceiling", "Op17.png")
     op17_button.place_button(2, 9)
 
-
     """
     tempimg = Image.open("Op1.jpg")
     tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
     tempimg = ImageTk.PhotoImage(tempimg)
-    op1_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
-    op1_frame.pack()
+    # op1_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
+    # op1_frame.pack()
     images.append(tempimg)
     # op1_frame.img = tempimg
-    op1_button = tk.Button(op1_frame, text="Rental Price Ceiling", image=tempimg)
+    op1_button = tk.Button(ssa.STATE_WINDOW, text="Rental Price Ceiling", image=tempimg)
     op1_button.grid(row=1, column=1)
-
+    """
+    """
     tempimg2 = Image.open("Op2.png")
     tempimg2 = tempimg2.resize((100, 100), Image.ANTIALIAS)
     tempimg2 = ImageTk.PhotoImage(tempimg2)
