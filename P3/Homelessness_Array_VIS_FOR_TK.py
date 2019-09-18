@@ -54,16 +54,19 @@ class Text:
         ssa.STATE_WINDOW.canvas.create_text(x0, y0, text=text_info)
 
 
-"""
-class Button:
-    def __init__(self, container, text, image):
-        self.container = container
-        self.text = text
+class Card:
+    def __init__(self, temp_text, image):
+        self.temp_text = temp_text
         self.image = image
-        # self.command = command
-        self.button = tk.Button(master=self.container, text=self.text, image=self.image)
-        self.button.tk.place()
-"""
+        tempimg = Image.open(self.image)
+        tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
+        tempimg = ImageTk.PhotoImage(tempimg)
+        images.append(tempimg)
+        self.op_temp_button = tk.Button(op_frame, text=self.temp_text, image=tempimg)
+
+    def place_button(self, input_row, input_column):
+        self.op_temp_button.grid(row=input_row, column=input_column)
+
 
 images = []  # Store images to keep references to images to prevent garbage collection
 
@@ -76,6 +79,7 @@ popularity_bar = None
 homeless_people_bar = None
 sf_map_gif = None
 button1 = None
+op_frame = None
 
 
 def initialize_vis():
@@ -88,6 +92,7 @@ def initialize_vis():
     global popularity_bar
     global homeless_people_bar
     global button1
+    global op_frame
 
     initialize_tk(WIDTH, HEIGHT, TITLE)
     table = ssa.STATE_WINDOW.canvas.create_rectangle(600, 0, 1200, 200, fill=rgb2hex(background))
@@ -105,28 +110,65 @@ def initialize_vis():
     Text(680, 150, "Popularity")
     Text(680, 180, "Homeless People")
 
+    op_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
+    op_frame.pack()
+    op1_button = Card("Rental Price Ceiling", "Op1.jpg")
+    op1_button.place_button(1, 1)
+    op2_button = Card("Build Affordable Houses", "Op2.png")
+    op2_button.place_button(1, 2)
+    op3_button = Card("Rental Price Ceiling", "Op3.jpg")
+    op3_button.place_button(1, 3)
+    op4_button = Card("Rental Price Ceiling", "Op4.jpg")
+    op4_button.place_button(1, 4)
+    op5_button = Card("Rental Price Ceiling", "Op5.jpg")
+    op5_button.place_button(1, 5)
+    op6_button = Card("Rental Price Ceiling", "Op6.png")
+    op6_button.place_button(1, 6)
+    op7_button = Card("Rental Price Ceiling", "Op7.png")
+    op7_button.place_button(1, 7)
+    op8_button = Card("Rental Price Ceiling", "Op8.jpg")
+    op8_button.place_button(1, 8)
+    op9_button = Card("Rental Price Ceiling", "Op9.jpg")
+    op9_button.place_button(2, 1)
+    op10_button = Card("Rental Price Ceiling", "Op10.jpg")
+    op10_button.place_button(2, 2)
+    op11_button = Card("Rental Price Ceiling", "Op11.jpg")
+    op11_button.place_button(2, 3)
+    op12_button = Card("Rental Price Ceiling", "Op12.png")
+    op12_button.place_button(2, 4)
+    op13_button = Card("Rental Price Ceiling", "Op13.png")
+    op13_button.place_button(2, 5)
+    op14_button = Card("Rental Price Ceiling", "Op14.jpg")
+    op14_button.place_button(2, 6)
+    op15_button = Card("Rental Price Ceiling", "Op15.png")
+    op15_button.place_button(2, 7)
+    op16_button = Card("Rental Price Ceiling", "Op16.jpg")
+    op16_button.place_button(2, 8)
+    op17_button = Card("Rental Price Ceiling", "Op17.png")
+    op17_button.place_button(2, 9)
 
+
+    """
     tempimg = Image.open("Op1.jpg")
     tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
     tempimg = ImageTk.PhotoImage(tempimg)
     op1_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
     op1_frame.pack()
-    op1_button = tk.Button(op1_frame, text="Rental Price Ceiling")
+    images.append(tempimg)
+    # op1_frame.img = tempimg
+    op1_button = tk.Button(op1_frame, text="Rental Price Ceiling", image=tempimg)
     op1_button.grid(row=1, column=1)
-    op1_button = tk.Button(op1_frame, text="Build Affordable Houses")
+
+    tempimg2 = Image.open("Op2.png")
+    tempimg2 = tempimg2.resize((100, 100), Image.ANTIALIAS)
+    tempimg2 = ImageTk.PhotoImage(tempimg2)
+    op2_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
+    op2_frame.pack()
+    images.append(tempimg2)
+    # op1_frame.img = tempimg
+    op1_button = tk.Button(op1_frame, text="Rental Price Ceiling", image=tempimg2)
     op1_button.grid(row=1, column=2)
-    op1_button = tk.Button(op1_frame, text="Street Health Care Team")
-    op1_button.grid(row=1, column=3)
-    op1_button = tk.Button(op1_frame, text="Free Education and Shelters for Homeless Children")
-    op1_button.grid(row=1, column=4)
-    op1_button = tk.Button(op1_frame, text="Drugs Users Treatment")
-    op1_button.grid(row=1, column=5)
-    op1_button = tk.Button(op1_frame, text="Drugs Users Treatment")
-    op1_button.grid(row=1, column=6)
-    op1_button = tk.Button(op1_frame, text="Drugs Users Treatment")
-    op1_button.grid(row=2, column=1)
-    op1_button = tk.Button(op1_frame, text="Drugs Users Treatment")
-    op1_button.grid(row=2, column=2)
+    """
 
     try:
         sf_map_gif = Image.open("SFMap.png")
@@ -142,14 +184,6 @@ def initialize_vis():
     except Exception as e:
         print("Failed to Display SF Map!")
         print(e)
-
-    """
-    op1_img = Image.open("Op15.png")
-    op1_img = op1_img.resize((500, 500), Image.ANTIALIAS)
-    op1_img = ImageTk.PhotoImage(op1_img)
-    images.append(op1_img)
-    op1 = ssa.STATE_WINDOW.canvas.create_image(660, 1000, image=op1_img, anchor=tk.CENTER)
-    """
 
 
 def render_state(s):
