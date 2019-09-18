@@ -29,14 +29,14 @@ Last updated 17 Sept. 2019. --Steve Tanimoto
 
 # global variables for the problem and solving process:
 
-STEP = 0
+STEP = 0;
 DEPTH = 0;
 OPERATORS = [];
 CURRENT_STATE = None;
 STATE_STACK = []
 APPLICABILITY_VECTOR = []
 
-problem_name = 'Homelessness'  # Default problem name. Edit or give a command-line parameter to change it.
+problem_name = 'Homelessness3'  # Default problem name. Edit or give a command-line parameter to change it.
 
 
 def compute_applicability_vector():
@@ -95,149 +95,22 @@ def initialize_tk(title="Tk_SOLUZION_Client3"):
     global ROOT, STATE_WINDOW, THE_CANVAS, CAPTION
     ROOT = tk.Tk()
     ROOT.title(title)
-    STATE_WINDOW = tk.Frame(ROOT, width=VIS.WIDTH, height=VIS.HEIGHT + 200)
+    STATE_WINDOW = tk.Frame(ROOT, width=1, height=1)
     STATE_WINDOW.pack()
-    THE_CANVAS = tk.Canvas(STATE_WINDOW, width=VIS.WIDTH, height=VIS.HEIGHT)
-    THE_CANVAS.pack()
-    CAPTION = tk.Label(STATE_WINDOW, text="caption goes here")
-    CAPTION.pack()
     print("Generic VIS initialization finished")
 
 
-class State_array:
-
-    def __init__(self, color_array=[], string_array=None, column_headers=[],
-                 column_footers=[], row_labels_left=[], row_labels_right=[],
-                 text_color="white",
-                 text_font=None,
-                 background=(128, 128, 128),
-                 caption="Current State"):
-        self.color_array = color_array
-        self.string_array = string_array
-        self.column_headers = column_headers
-        self.column_footers = column_footers
-        self.row_labels_left = row_labels_left
-        self.row_labels_right = row_labels_right
-        self.text_color = text_color
-        self.text_font = text_font
-        self.background = background
-        self.caption = caption
-        self.ncols = len(self.color_array[0])
-        self.nrows = len(self.color_array)
-
-    def show(self):
-        global STATE_WINDOW, THE_CANVAS, LOWER_GUI_PART, CAPTION
-        print("In State_array.show()")
-        # Clear away any stuff from showing the last state.  This avoids
-        # what would otherwise be a memory leak, in which more and more
-        # rectangles, text objects, and images get piled on top of those
-        # from previous states.
-        THE_CANVAS.delete("all")
-
-        # Now create the rectangles, canvas images, strings for the current state.
-        x0 = 0;
-        y0 = 0;
-        sww = VIS.WIDTH  # state window width.
-        swh = VIS.HEIGHT
-        cellw = sww / self.ncols  # cell width
-        cellh = swh / self.nrows
-        i = 0
-        for r in self.color_array:
-            j = 0
-            for c in r:
-                if type(c) == type('foo.jpg'):
-                    img = get_photo_image(c, cellw, cellh)
-                    THE_CANVAS.create_image((x0 + j * cellw, y0 + i * cellh), image=img, \
-                                            anchor=tk.NW)
-                else:
-                    tk_rgb = "#%02x%02x%02x" % c
-                    THE_CANVAS.create_rectangle(x0 + j * cellw, y0 + i * cellh,
-                                                x0 + (j + 1) * cellw, y0 + (i + 1) * cellh,
-                                                fill=tk_rgb)
-                if self.string_array:
-                    THE_CANVAS.create_text(x0 + (j + 0.5) * cellw, y0 + (i + 0.5) * cellh,
-                                           text=self.string_array[i][j],
-                                           fill=self.text_color,
-                                           font=self.text_font)
-                j += 1
-            i += 1
-        CAPTION.config(text=self.caption)
-
-
-PHOTOIMAGES = {}
-
-
-def get_photo_image(filename, w, h):
-    '''See if a PhotoImage has already been created for this filenam.
-    If so, return that.  Otherwise, use PIL to load it, resize it,
-    and make a PhotoImage out of it. Cache it in a dict. '''
-    try:
-        img = PHOTOIMAGES[filename]
-        return img
-    except:
-        try:
-            w = int(w);
-            h = int(h)  # make sure these are not floats.
-            non_photoimage = (PIL_Image.open(filename)).resize((w, h))
-            photoimage = PIL_ImageTk.PhotoImage(non_photoimage)
-            PHOTOIMAGES[filename] = photoimage
-            return photoimage
-        except Exception as e:
-            print("Error while trying to load an image named: " + filename)
-            print(e)
-
-
-CHOICE = None
-
-
-class lower_gui_part(tk.Frame):
-    def __init__(self, parent):  # , width=300, height=300):
-        tk.Frame.__init__(self, parent)
-        self.pack()
-        self.parent = parent
-        self.label2 = tk.Label(self, text="List of applicable operators")
-        self.label2.pack(padx=20, pady=20)
-        self.combo = ttk.Combobox(self, width=50,
-                                  values=[
-                                      "0: January",
-                                      "1: February",
-                                      "2: March",
-                                      "3: April",
-                                      "H: Help",
-                                      "B: Back",
-                                      "Q: Quit"])  # These particular values are very temporary.
-        self.combo.pack()
-        global CHOICE;
-        CHOICE = self.combo
-        self.gobutton = tk.Button(self, text="Apply", command=self.apply)
-        self.gobutton.pack()
-
-    def get_choice(self):
-        chosen_item = self.combo.get()
-        # print("Selected item is: "+chosen_item)
-        return chosen_item
-
-    def apply(self):
-        # print("In the new apply method.")
-        item = self.get_choice()
-        parts = item.split(":")  # The take_turn function only needs the
-        # operator number or 'code' before the colon.
-        take_turn(parts[0])
-
-    def update_choices(self):
-        "This makes sure that only legal operators (for the current state) are shown in the combo box."
-        global APPLICABILITY_VECTOR, OPERATORS
-        new_values = [(str(i) + ": " + OPERATORS[i].name) for i in range(len(OPERATORS)) if APPLICABILITY_VECTOR[i]]
-        new_values += ["H: Help", "B: Back", "Q: Quit"]
-        self.combo.configure(values=new_values)
-
-
-LOWER_GUI_PART = None
+def get_choices(self):
+    "This makes sure that only legal operators (for the current state) are shown in the combo box."
+    global APPLICABILITY_VECTOR, OPERATORS
+    new_values = [(str(i) + ": " + OPERATORS[i].name) for i in range(len(OPERATORS)) if APPLICABILITY_VECTOR[i]]
+    new_values += ["H: Help", "B: Back", "Q: Quit"]
+    return new_values
 
 
 def take_turn(command):
     global CURRENT_STATE, STATE_STACK, DEPTH, STEP, OPERATORS, APPLICABILITY_VECTOR
-    global ROOT, LOWER_GUI_PART
+    global ROOT
     # print("In take_turn, command is: "+command)
     if command == "B" or command == "b":
         if len(STATE_STACK) > 1:
@@ -268,7 +141,6 @@ def take_turn(command):
         STATE_STACK.append(CURRENT_STATE)
         PROBLEM.render_state(CURRENT_STATE)
         compute_applicability_vector()
-        LOWER_GUI_PART.update_choices()
         DEPTH += 1
         STEP += 1
         return
@@ -292,14 +164,14 @@ if __name__ == '__main__':
 
     if len(sys.argv) < 2:
         """ The following few lines go with the LINUX version of the text client.
-    print('''
-         Usage: 
-  ./IDLE_Text_SOLUZION_Client <PROBLEM NAME>
-         For example:
-  ./IDLE_Text_SOLUZION_Client Missionaries
-    ''')
-    exit(1)
-    """
+        print('''
+             Usage: 
+      ./IDLE_Text_SOLUZION_Client <PROBLEM NAME>
+             For example:
+      ./IDLE_Text_SOLUZION_Client Missionaries
+        ''')
+        exit(1)
+        """
         sys.argv = ['Tk_SOLUZION_Client3.py', problem_name]  # IDLE and Tk version only.
         # Sets up sys.argv as if it were coming in on a Linux command line.
 
@@ -335,9 +207,8 @@ if __name__ == '__main__':
         print("Trying to initialize the visualization")
         PROBLEM.render_state = VIS.render_state
         initialize_tk()
-        VIS.initialize_vis(STATE_WINDOW, State_array, CURRENT_STATE)
-        LOWER_GUI_PART = lower_gui_part(STATE_WINDOW)
-        LOWER_GUI_PART.update_choices()
+        VIS.initialize_vis(ROOT, CURRENT_STATE, get_choices, take_turn)
+        PROBLEM.render_state(CURRENT_STATE)
     except Exception as e:
         print("Could not initialize the visualization.")
         print(e)

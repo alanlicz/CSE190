@@ -56,8 +56,8 @@ class Text:
 
 class Card:
     def __init__(self, temp_text, image):
-        self.temp_text = temp_text
         self.image = image
+        self.temp_text = temp_text
         tempimg = Image.open(self.image)
         tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
         tempimg = ImageTk.PhotoImage(tempimg)
@@ -117,35 +117,37 @@ def initialize_vis():
     op2_button = Card("Build Affordable Houses", "Op2.png")
     op2_button.place_button(1, 2)
     op3_button = Card("Rental Price Ceiling", "Op3.jpg")
-    op3_button.place_button(1, 3)
+    op3_button.place_button(1 ,3)
     op4_button = Card("Rental Price Ceiling", "Op4.jpg")
     op4_button.place_button(1, 4)
     op5_button = Card("Rental Price Ceiling", "Op5.jpg")
     op5_button.place_button(1, 5)
     op6_button = Card("Rental Price Ceiling", "Op6.png")
     op6_button.place_button(1, 6)
-    op7_button = Card("Rental Price Ceiling", "Op7.png")
+    """
+    op7_button = Card("Rental Price Ceiling")
     op7_button.place_button(1, 7)
-    op8_button = Card("Rental Price Ceiling", "Op8.jpg")
+    op8_button = Card("Rental Price Ceiling")
     op8_button.place_button(1, 8)
-    op9_button = Card("Rental Price Ceiling", "Op9.jpg")
+    op9_button = Card("Rental Price Ceiling")
     op9_button.place_button(2, 1)
-    op10_button = Card("Rental Price Ceiling", "Op10.jpg")
+    op10_button = Card("Rental Price Ceiling")
     op10_button.place_button(2, 2)
-    op11_button = Card("Rental Price Ceiling", "Op11.jpg")
+    op11_button = Card("Rental Price Ceiling")
     op11_button.place_button(2, 3)
-    op12_button = Card("Rental Price Ceiling", "Op12.png")
+    op12_button = Card("Rental Price Ceiling")
     op12_button.place_button(2, 4)
-    op13_button = Card("Rental Price Ceiling", "Op13.png")
+    op13_button = Card("Rental Price Ceiling")
     op13_button.place_button(2, 5)
-    op14_button = Card("Rental Price Ceiling", "Op14.jpg")
+    op14_button = Card("Rental Price Ceiling")
     op14_button.place_button(2, 6)
-    op15_button = Card("Rental Price Ceiling", "Op15.png")
+    op15_button = Card("Rental Price Ceiling")
     op15_button.place_button(2, 7)
-    op16_button = Card("Rental Price Ceiling", "Op16.jpg")
+    op16_button = Card("Rental Price Ceiling")
     op16_button.place_button(2, 8)
-    op17_button = Card("Rental Price Ceiling", "Op17.png")
+    op17_button = Card("Rental Price Ceiling")
     op17_button.place_button(2, 9)
+    """
 
     """
     tempimg = Image.open("Op1.jpg")
