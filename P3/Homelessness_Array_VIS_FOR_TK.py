@@ -2,8 +2,7 @@ import show_state_array as ssa
 from show_state_array import initialize_tk, state_array, state_display, test
 import tkinter as tk
 from tkinter import font
-from PIL import Image
-from PIL import ImageTk
+from PIL import Image, ImageTk
 
 myFont = None
 
@@ -66,7 +65,6 @@ class Button:
         self.button.tk.place()
 """
 
-
 images = []  # Store images to keep references to images to prevent garbage collection
 
 table = None
@@ -92,7 +90,7 @@ def initialize_vis():
     global button1
 
     initialize_tk(WIDTH, HEIGHT, TITLE)
-    table = ssa.STATE_WINDOW.canvas.create_rectangle(0, 0, WIDTH, HEIGHT, fill=rgb2hex(background))
+    table = ssa.STATE_WINDOW.canvas.create_rectangle(600, 0, 1200, 200, fill=rgb2hex(background))
     money_bar = StatusBar(800, 20, 200, 20, blue, green)
     housing_price_bar = StatusBar(800, 50, 200, 20, blue, yellow)
     health_points_bar = StatusBar(800, 80, 200, 20, blue, purple)
@@ -107,12 +105,15 @@ def initialize_vis():
     Text(680, 150, "Popularity")
     Text(680, 180, "Homeless People")
 
-    tempimg = Image.open("Op1.gif")
+
+    tempimg = Image.open("Op1.jpg")
     tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
     tempimg = ImageTk.PhotoImage(tempimg)
-    button1 = tk.Button(ssa.STATE_WINDOW, text="test", image=tempimg)
-    button1.tk.pack()
-
+    op1_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
+    op1_frame.pack()
+    op1_button = tk.Button(op1_frame, text="Entertainment")
+    op1_frame.place(x=100, y=0)
+    op1_button.pack()
     try:
         sf_map_gif = Image.open("SFMap.png")
         sf_map_gif = sf_map_gif.resize((500, 500), Image.ANTIALIAS)
@@ -127,7 +128,6 @@ def initialize_vis():
     except Exception as e:
         print("Failed to Display SF Map!")
         print(e)
-
 
     """
     op1_img = Image.open("Op15.png")
