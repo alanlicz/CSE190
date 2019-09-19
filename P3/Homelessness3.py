@@ -150,6 +150,7 @@ class State:
             return True
         if self.low_popularity_count > low_popularity_count_threshold:
             return True
+
         return False
 
     def is_goal(self):
@@ -299,7 +300,7 @@ OPERATORS = [
 
     Operator("Financial: Raise Tax",
              lambda s: True,
-             lambda s: s.move(0, 0, 0, 0, -20, 0, revenue_factor_adjustment=0.35)),
+             lambda s: s.move(200000000, 0, 0, 0, -20, 0, revenue_factor_adjustment=0.35)),
 
     Operator("Financial: Cut Tax",
              lambda s: True,
