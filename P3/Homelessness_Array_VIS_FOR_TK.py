@@ -117,7 +117,7 @@ def initialize_vis():
     Button(2, 5, op_frame, "Op14.jpg")
     Button(2, 6, op_frame, "Op15.png")
     Button(2, 7, op_frame, "Op16.jpg")
-    Button(2, 8, op_frame, "Op17.pn3g")
+    Button(2, 8, op_frame, "Op17.png")
 
     try:
         sf_map_gif = Image.open("SFMap.png")
@@ -158,6 +158,6 @@ def render_state(s):
     money_bar.update(s.money / 5000000000.0)
     housing_price_bar.update(s.housing_price / 2400.0)
     health_points_bar.update(s.health_points / 100.0)
-    employment_rate_bar.update(s.employment_rate / 50.0)
+    employment_rate_bar.update(s.employment_rate / 100.0)
     popularity_bar.update(s.popularity / 100.0)
     homeless_people_bar.update(s.homeless_people / 25000.0)
