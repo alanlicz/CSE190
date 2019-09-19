@@ -79,7 +79,7 @@ class Card:
         print(self.image)
         self.image = ImageTk.PhotoImage(self.image)
         self.background_image = Image.open(background_path)
-        self.background_image = self.background_image.resize((100, 120), Image.ANTIALIAS)
+        self.background_image = self.background_image.resize((100, 100), Image.ANTIALIAS)
         self.background_image = ImageTk.PhotoImage(self.background_image)
         images.append(self.image)
         images.append(self.background_image)
@@ -93,17 +93,6 @@ class Card:
         self.image_label = tk.Label(master=CARD_FRAME, image=self.image)
         self.image_label.place()
 
-
-"""
-class Button:
-    def __init__(self, container, text, image):
-        self.container = container
-        self.text = text
-        self.image = image
-        # self.command = command
-        self.button = tk.Button(master=self.container, text=self.text, image=self.image)
-        self.button.tk.place()
-"""
 
 images = []  # Store images to keep references to images to prevent garbage collection
 
@@ -144,6 +133,66 @@ def operator05():
     return STATE_TRANS_FUNCTION("5")
 
 
+def operator06():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("6")
+
+
+def operator07():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("7")
+
+
+def operator08():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("8")
+
+
+def operator09():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("9")
+
+
+def operator10():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("10")
+
+
+def operator11():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("11")
+
+
+def operator12():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("12")
+
+
+def operator13():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("13")
+
+
+def operator14():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("14")
+
+
+def operator15():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("15")
+
+
+def operator16():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("16")
+
+
+def operator17():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("17")
+
+
 def initialize_vis(root, current_state, get_operator, state_trans_function):
     global ROOT
     global table
@@ -178,7 +227,7 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     # ROOT.resizable(0, 0)
     MAP_FRAME = tk.Frame(master=ROOT, width=270, height=270)
     MAP_FRAME.pack()
-    CARD_FRAME = tk.Frame(master=ROOT, width=500, height=200)
+    CARD_FRAME = tk.Frame(master=ROOT, width=1000, height=400)
     CARD_FRAME.pack()
     MAP_CANVAS = tk.Canvas(master=MAP_FRAME, width=sf_map_gif.width(), height=sf_map_gif.height())
     MAP_CANVAS.pack(side=tk.LEFT)
@@ -196,52 +245,23 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
 
     # op_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
     # op_frame.pack()
-    op1_button = Card("Rental Price Ceiling", "Op1.jpg", "Op1.jpg", operator01)
-    Card("Build Affordable Houses", "Op2.png", "Op2.png", operator02)
-    Card("Street Health Care Team", "Op3.jpg", "Op3.jpg", operator03)
-    Card("Drugs Users Treatment", "Op4.jpg", "Op4.jpg", operator04)
-    Card("Free Education and Shelters for Homeless Children", "Op5.jpg", "Op5.jpg", operator05)
-    # op1_button.place_button(1, 1)
-    # op2_button = Card("Build Affordable Houses", "Op2.png")
-    # op2_button.place_button(1, 2)
-    # op3_button = Card("Rental Price Ceiling", "Op3.jpg")
-    # op3_button.place_button(1, 3)
-    # op4_button = Card("Rental Price Ceiling", "Op4.jpg")
-    # op4_button.place_button(1, 4)
-    # op5_button = Card("Rental Price Ceiling", "Op5.jpg")
-    # op5_button.place_button(1, 5)
-    # op6_button = Card("Rental Price Ceiling", "Op6.png")
-    # op6_button.place_button(1, 6)
-    # op7_button = Card("Rental Price Ceiling", "Op7.png")
-    # op7_button.place_button(1, 7)
-    # op8_button = Card("Rental Price Ceiling", "Op8.jpg")
-    # op8_button.place_button(1, 8)
-    # op9_button = Card("Rental Price Ceiling", "Op9.jpg")
-    # op9_button.place_button(2, 1)
-    # op10_button = Card("Rental Price Ceiling", "Op10.jpg")
-    # op10_button.place_button(2, 2)
-    # op11_button = Card("Rental Price Ceiling", "Op11.jpg")
-    # op11_button.place_button(2, 3)
-    # op12_button = Card("Rental Price Ceiling", "Op12.png")
-    # op12_button.place_button(2, 4)
-    # op13_button = Card("Rental Price Ceiling", "Op13.png")
-    # op13_button.place_button(2, 5)
-    # op14_button = Card("Rental Price Ceiling", "Op14.jpg")
-    # op14_button.place_button(2, 6)
-    # op15_button = Card("Rental Price Ceiling", "Op15.png")
-    # op15_button.place_button(2, 7)
-    # op16_button = Card("Rental Price Ceiling", "Op16.jpg")
-    # op16_button.place_button(2, 8)
-    # op17_button = Card("Rental Price Ceiling", "Op17.png")
-    # op17_button.place_button(2, 9)
-
-    """
-    op1_img = Image.open("Op15.png")
-    op1_img = op1_img.resize((500, 500), Image.ANTIALIAS)
-    op1_img = ImageTk.PhotoImage(op1_img)
-    images.append(op1_img)
-    op1 = STATUSBAR_CANVAS.create_image(660, 1000, image=op1_img, anchor=tk.CENTER)
-    """
+    Card("Rental Price Ceiling", "Op1.jpg", "Op1.jpg", operator01, 0, 0)
+    Card("Build Affordable Houses", "Op2.png", "Op2.png", operator02, 100, 0)
+    Card("Street Health Care Team", "Op3.jpg", "Op3.jpg", operator03, 200, 0)
+    Card("Drugs Users Treatment", "Op4.jpg", "Op4.jpg", operator04, 300, 0)
+    Card("Free Education and Shelters for Homeless Children", "Op5.jpg", "Op5.jpg", operator05, 400, 0)
+    Card("Rental Price Ceiling", "Op6.png", "Op6.png", operator06, 500, 0)
+    Card("Rental Price Ceiling", "Op7.png", "Op7.png", operator07, 600, 0)
+    Card("Rental Price Ceiling", "Op8.jpg", "Op8.jpg", operator08, 700, 0)
+    Card("Rental Price Ceiling", "Op9.jpg", "Op9.jpg", operator09, 800, 0)
+    Card("Rental Price Ceiling", "Op10.jpg", "Op10.jpg", operator10, 0, 150)
+    Card("Rental Price Ceiling", "Op11.jpg", "Op11.jpg", operator11, 100, 150)
+    Card("Rental Price Ceiling", "Op12.png", "Op12.png", operator12, 200, 150)
+    Card("Rental Price Ceiling", "Op13.png", "Op13.png", operator13, 300, 150)
+    Card("Rental Price Ceiling", "Op14.jpg", "Op14.jpg", operator14, 400, 150)
+    Card("Rental Price Ceiling", "Op15.png", "Op15.png", operator15, 500, 150)
+    Card("Rental Price Ceiling", "Op16.jpg", "Op16.jpg", operator16, 600, 150)
+    Card("Rental Price Ceiling", "Op17.png", "Op17.png", operator17, 700, 150)
 
 
 def render_state(s):
