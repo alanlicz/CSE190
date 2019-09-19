@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import font, messagebox
 from PIL import Image, ImageTk
 import random
+import os
+import subprocess
+import webbrowser
 
 myFont = None
 ROOT = None
@@ -81,12 +84,12 @@ class Card:
         self.background_image = ImageTk.PhotoImage(self.background_image)
         images.append(self.background_image)
         self.operator = operator
-        self.button = tk.Button(CARD_FRAME, image=self.background_image, command=operator, width=100, height=120)
+        self.button = tk.Button(CARD_FRAME, image=self.background_image, command=operator, width=100, height=100)
         self.button.place(x=x0, y=y0)
         self.x0 = x0
         self.y0 = y0
         self.text_label = tk.Label(master=CARD_FRAME, text=text)
-        self.text_label.place(x=x0, y=y0 + 110)
+        self.text_label.place(x=x0+10, y=y0 + 110)
 
 
 """
@@ -282,7 +285,7 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     ROOT = root
     MAP_FRAME = tk.Frame(master=ROOT, width=900, height=270)
     MAP_FRAME.pack()
-    CARD_FRAME = tk.Frame(master=ROOT, width=1600, height=600)
+    CARD_FRAME = tk.Frame(master=ROOT, width=1600, height=400)
     CARD_FRAME.pack()
     MAP_CANVAS = tk.Canvas(master=MAP_FRAME, width=sf_map_gif.width(), height=sf_map_gif.height())
     MAP_CANVAS.pack(side=tk.LEFT)
@@ -295,7 +298,7 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     STATUSBAR_CANVAS = tk.Canvas(master=MAP_FRAME, width=900, height=300)
     STATUSBAR_CANVAS.pack(side=tk.RIGHT)
 
-    table = STATUSBAR_CANVAS.create_rectangle(0, 0, 900, 300, fill=rgb2hex(background))
+    # table = STATUSBAR_CANVAS.create_rectangle(0, 0, 900, 300, fill=rgb2hex(background))
     money_bar = StatusBar("Money", 120, 20, 200, 20, blue, green)
     housing_price_bar = StatusBar("Housing Price", 120, 50, 200, 20, blue, yellow)
     health_points_bar = StatusBar("Health Points", 120, 80, 200, 20, blue, purple)
@@ -326,16 +329,21 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     BACK_BUTTON.place(x=1100, y=150)
     QUIT_BUTTON = tk.Button(master=CARD_FRAME, text="QUIT", width=10, command=quit)
     QUIT_BUTTON.place(x=1100, y=200)
+    tk.messagebox.showinfo("1111", "Game title: Can You Solve Homelessness Issue in San Fransisco?\n \n"
+                                   "In this game, you will act as the government to solve the homelessness issue in San"
+                                   " Francisco. In each turn, you will be provided several choices which help you "
+                                   "solve the issue. Try to solve the problem without being overthrown by voters "
+                                   "or getting bankrupt.")
+    # help_button = tk.Button(master=CARD_FRAME, text="help", width=10, command=webbrowser.open("111.txt"))
+    # help_button.place(x=1250, y=200)
 
 
-
-    """
-    op1_img = Image.open("Op15.png")
-    op1_img = op1_img.resize((500, 500), Image.ANTIALIAS)
-    op1_img = ImageTk.PhotoImage(op1_img)
-    images.append(op1_img)
-    op1 = STATUSBAR_CANVAS.create_image(660, 1000, image=op1_img, anchor=tk.CENTER)
-    """
+def click_on_file(filename="111.txt"):
+    """Open document with default application in Python."""
+    try:
+        os.startfile(filename)
+    except AttributeError:
+        subprocess.call(['open', filename])
 
 
 def render_state(s):
@@ -365,7 +373,15 @@ def render_state(s):
     popularity_bar.update(s.popularity / 100.0)
     homeless_people_bar.update(s.homeless_people / 25000.0)
     render_homeless_map(s.homeless_people / 15000)
-    QUIT_BUTTON = tk.Button(master=CARD_FRAME, text="Quarter Count= " + str(s.quarter_num), width=20, command=quit)
-    QUIT_BUTTON.place(x=1100, y=300)
+    msg_box = tk.messagebox.askquestion('Game Message', 'Do you want to check the description for each operator?'
+                                                        'Click yes if you want to.', icon='warning')
+    # if msg_box == 'yes':
+    #     webbrowser.open("111.txt")
+    quarter_button = tk.Button(master=CARD_FRAME, text="Quarter count = " + str(s.quarter_num), width=20)
+    quarter_button.place(x=1250, y=150)
+    help_button = tk.Button(master=CARD_FRAME, text="HELP", command=click_on_file)
+    help_button.place(x=1250, y=200)
     if s.is_goal():
         tk.messagebox.showerror("Game Message", s.goal_message())
+
+

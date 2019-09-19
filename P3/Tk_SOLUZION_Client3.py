@@ -29,10 +29,10 @@ Last updated 17 Sept. 2019. --Steve Tanimoto
 
 # global variables for the problem and solving process:
 
-STEP = 0;
-DEPTH = 0;
-OPERATORS = [];
-CURRENT_STATE = None;
+STEP = 0
+DEPTH = 0
+OPERATORS = []
+CURRENT_STATE = None
 STATE_STACK = []
 APPLICABILITY_VECTOR = []
 
