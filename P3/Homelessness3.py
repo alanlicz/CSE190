@@ -23,9 +23,10 @@ health_points_uncertainty = 0.2
 popularity_uncertainty = 0.05
 employment_rate_uncertainty = 0.05
 
-homeless_money_externality_factor = 6000  # $8125 Each Homeless Per Quarter on Public Fund and Tax Revenue
+homeless_money_externality_factor = 4000  # $8125 Each Homeless Per Quarter on Public Fund and Tax Revenue
 homeless_popularity_externality_factor = 0.0001
-housing_price_homeless_externality_factor = 1
+employment_rate_homeless_externality_factor = 400
+housing_price_homeless_externality_factor = 0.1
 housing_price_popularity_externality_factor = 0.1
 health_points_popularity_externality_factor = 0.4
 
@@ -117,17 +118,16 @@ class State:
         news.revenue_factor *= revenue_factor_adjustment * self.effectiveness_factor
         news.homeless_change_rate += homeless_change_rate_adjustment * self.effectiveness_factor
 
-        news.homeless_people += (
-                                            news.housing_price - housing_price_homeless_externality_baseline) * housing_price_homeless_externality_factor
+        news.homeless_people += (news.housing_price - housing_price_homeless_externality_baseline) * housing_price_homeless_externality_factor
         news.money -= (news.homeless_people - homeless_money_externality_baseline) * homeless_money_externality_factor
-        news.popularity -= (
-                                       news.homeless_people - homeless_popularity_externality_baseline) * homeless_popularity_externality_factor
+        news.popularity -= (news.homeless_people - homeless_popularity_externality_baseline) * homeless_popularity_externality_factor
 
         news.money = 0 if news.money < 0 else news.money
         news.housing_price = 0 if news.housing_price < 0 else news.housing_price
         news.health_points = 0.0 if news.health_points < 0 else news.health_points
         news.health_points = 100.0 if news.health_points > 100 else news.health_points
         news.employment_rate = 0.0 if news.employment_rate < 0 else news.employment_rate
+        news.employment_rate = 100.0 if news.employment_rate > 100.0 else news.employment_rate
         news.popularity = 0.0 if news.popularity < 0 else news.popularity
         news.popularity = 100.0 if news.popularity > 100.0 else news.popularity
         news.homeless_people = 0.0 if news.homeless_people < 0.0 else news.homeless_people
@@ -296,7 +296,7 @@ OPERATORS = [
 
     Operator("Financial: Raise Tax",
              lambda s: True,
-             lambda s: s.move(0, 0, 0, 0, -20, 0, revenue_factor_adjustment=0.2)),
+             lambda s: s.move(0, 0, 0, 0, -20, 0, revenue_factor_adjustment=0.35)),
 
     Operator("Financial: Cut Tax",
              lambda s: True,

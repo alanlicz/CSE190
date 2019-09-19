@@ -151,7 +151,7 @@ try:
     spec.loader.exec_module(VIS)
     print("Using TK vis routine")
     PROBLEM.render_state = VIS.render_state
-    VIS.initialize_vis()
+    VIS.initialize_vis(ROOT, CURRENT_STATE,get_choices,take_turn)
 except Exception as e:
     print(e)
     exit(1)
@@ -178,8 +178,7 @@ class AutoPlayer(threading.Thread):
 # The following is only executed if this module is being run as the main
 # program, rather than imported from another one.
 if __name__ == '__main__':
-    import show_state_array
 
-    player = AutoPlayer(show_state_array.STATE_WINDOW)
-    show_state_array.STATE_WINDOW.mainloop()
+    player = AutoPlayer(PROBLEM.STATE_WINDOW)
+    PROBLEM.STATE_WINDOW.mainloop()
     print("The session is finished.")

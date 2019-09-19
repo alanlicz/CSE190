@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font
 from PIL import Image, ImageTk
+import random
 
 myFont = None
 ROOT = None
@@ -11,7 +12,9 @@ MAP_CANVAS = None
 STATUSBAR_CANVAS = None
 GET_OPERATOR = None
 STATE_TRANS_FUNCTION = None
-
+GOAL_MESSAGE_FUNCTION = None
+WIDTH = 1024
+HEIGHT = 600
 TITLE = 'Homelessness'
 
 tan = (132, 117, 69)
@@ -71,6 +74,7 @@ class Card:
         global ROOT
         global MAP_FRAME
         global images
+        global CARD_FRAME
         self.text = text
         self.background_image = Image.open(background_path)
         self.background_image = self.background_image.resize((100, 100), Image.ANTIALIAS)
@@ -83,7 +87,19 @@ class Card:
         self.y0 = y0
         self.text_label = tk.Label(master=CARD_FRAME, text=text)
         self.text_label.place(x=x0, y=y0 + 110)
+        print(self.text_label)
 
+
+"""
+class Button:
+    def __init__(self, container, text, image):
+        self.container = container
+        self.text = text
+        self.image = image
+        # self.command = command
+        self.button = tk.Button(master=self.container, text=self.text, image=self.image)
+        self.button.tk.place()
+"""
 
 images = []  # Store images to keep references to images to prevent garbage collection
 
@@ -95,8 +111,14 @@ employment_rate_bar = None
 popularity_bar = None
 homeless_people_bar = None
 sf_map_gif = None
-button1 = None
+homeless_icon = None
+homeless_items = []
+homeless_items_downtown = []
+HOMELESS_ITEMS_FACTOR = 80
 CARD_FRAME = None
+CARDS = []
+BACK_BUTTON = None
+QUIT_BUTTON = None
 
 
 def operator01():
@@ -184,16 +206,48 @@ def operator17():
     return STATE_TRANS_FUNCTION("17")
 
 
-"""
 def back():
     global STATE_TRANS_FUNCTION
     return STATE_TRANS_FUNCTION("B")
-"""
+
+
+def quit():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("Q")
+
+
+def render_homeless_map(homeless_percentage):
+    global MAP_CANVAS
+    global homeless_items
+    global homeless_icon
+    global HOMELESS_ITEMS_FACTOR
+    global homeless_items_downtown
+    if int(HOMELESS_ITEMS_FACTOR * homeless_percentage) - len(homeless_items) >= 0:
+        for i in range(0, int(HOMELESS_ITEMS_FACTOR * homeless_percentage) - len(homeless_items)):
+            homeless_items.append(MAP_CANVAS.create_image(int(random.uniform(40, 380)), int(random.uniform(170, 500)),
+                                                          image=homeless_icon))
+    else:
+        for i in range(0, len(homeless_items) - int(HOMELESS_ITEMS_FACTOR * homeless_percentage)):
+            index = int(random.uniform(0, len(homeless_items) - 1))
+            MAP_CANVAS.delete(homeless_items[index])
+            del homeless_items[index]
+
+    if int(HOMELESS_ITEMS_FACTOR * homeless_percentage) - len(homeless_items_downtown) >= 0:
+        for i in range(0, int(HOMELESS_ITEMS_FACTOR * homeless_percentage) - len(homeless_items_downtown)):
+            homeless_items_downtown.append(
+                MAP_CANVAS.create_image(int(random.uniform(180, 380)), int(random.uniform(120, 320)),
+                                        image=homeless_icon))
+    else:
+        for i in range(0, len(homeless_items_downtown) - int(HOMELESS_ITEMS_FACTOR * homeless_percentage)):
+            index = int(random.uniform(0, len(homeless_items_downtown)))
+            MAP_CANVAS.delete(homeless_items_downtown[index])
+            del homeless_items_downtown[index]
 
 
 def initialize_vis(root, current_state, get_operator, state_trans_function):
     global ROOT
     global table
+    global images
     global sf_map_gif
     global money_bar
     global housing_price_bar
@@ -201,16 +255,21 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     global employment_rate_bar
     global popularity_bar
     global homeless_people_bar
-    global button1
     global MAP_CANVAS
     global STATUSBAR_CANVAS
     global MAP_FRAME
     global STATUSBAR_FRAME
     global STATE_TRANS_FUNCTION
     global GET_OPERATOR
+    global homeless_icon
     global CARD_FRAME
+    global CARDS
+    global BACK_BUTTON
+    global QUIT_BUTTON
+    global GOAL_MESSAGE_FUNCTION
     STATE_TRANS_FUNCTION = state_trans_function
     GET_OPERATOR = get_operator
+    GOAL_MESSAGE_FUNCTION = current_state.goal_message
 
     try:
         sf_map_gif = Image.open("SFMap.png")
@@ -222,18 +281,22 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     images.append(sf_map_gif)  # Store images to keep references to images to prevent garbage collection
 
     ROOT = root
-    # ROOT.resizable(0, 0)
-    MAP_FRAME = tk.Frame(master=ROOT, width=570, height=570)
+    MAP_FRAME = tk.Frame(master=ROOT, width=900, height=270)
     MAP_FRAME.pack()
-    CARD_FRAME = tk.Frame(master=ROOT, width=1000, height=600)
+    CARD_FRAME = tk.Frame(master=ROOT, width=1600, height=600)
     CARD_FRAME.pack()
     MAP_CANVAS = tk.Canvas(master=MAP_FRAME, width=sf_map_gif.width(), height=sf_map_gif.height())
     MAP_CANVAS.pack(side=tk.LEFT)
-    MAP_CANVAS.create_image(270, 270, image=sf_map_gif, anchor=tk.CENTER)
-    STATUSBAR_CANVAS = tk.Canvas(master=MAP_FRAME, width=500, height=300)
+    MAP_CANVAS.create_image(0, 0, image=sf_map_gif, anchor=tk.NW)
+
+    homeless_icon = Image.open("Op1.jpg")
+    homeless_icon = homeless_icon.resize((20, 20), Image.ANTIALIAS)
+    homeless_icon = ImageTk.PhotoImage(homeless_icon)
+    images.append(homeless_icon)
+    STATUSBAR_CANVAS = tk.Canvas(master=MAP_FRAME, width=900, height=300)
     STATUSBAR_CANVAS.pack(side=tk.RIGHT)
 
-    table = STATUSBAR_CANVAS.create_rectangle(0, 0, 400, 300, fill=rgb2hex(background))
+    table = STATUSBAR_CANVAS.create_rectangle(0, 0, 900, 300, fill=rgb2hex(background))
     money_bar = StatusBar("Money", 120, 20, 200, 20, blue, green)
     housing_price_bar = StatusBar("Housing Price", 120, 50, 200, 20, blue, yellow)
     health_points_bar = StatusBar("Health Points", 120, 80, 200, 20, blue, purple)
@@ -241,25 +304,37 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     popularity_bar = StatusBar("Popularity", 120, 140, 200, 20, blue, orange)
     homeless_people_bar = StatusBar("Homeless People", 120, 170, 200, 20, blue, tan)
 
-    # op_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
-    # op_frame.pack()
-    Card("Rental Price \nCeiling", "Op1.jpg", operator01, 20, 0)
-    Card("Build Affordable \nHouses", "Op2.png", operator02, 150, 0)
-    Card("Street Health \nTeam", "Op3.jpg", operator03, 300, 0)
-    Card("Drugs Treatment", "Op4.jpg", operator04, 450, 0)
-    Card("Free Education \nand Shelters", "Op5.jpg", operator05, 600, 0)
-    Card("Free Job \nTraining", "Op6.png", operator06, 750, 0)
-    Card("Provide Job \nOpportunities", "Op7.png", operator07, 20, 150)
-    Card("Tax Increasing", "Op8.jpg", operator08, 150, 150)
-    Card("Tax Decreasing", "Op9.jpg", operator09, 300, 150)
-    Card("Provide Portable \nShelter", "Op10.jpg", operator10, 450, 150)
-    Card("Provide Places \nfor Homeless", "Op11.jpg", operator11, 600, 150)
-    Card("Increase Minimum \nWage", "Op12.png", operator12, 750, 150)
-    Card("Make Homeless \nPriority in Jobs", "Op13.png", operator13, 20, 300)
-    Card("Low Price \nInsurance", "Op14.jpg", operator14, 150, 300)
-    Card("Free College \nTuition", "Op15.png", operator15, 300, 300)
-    Card("Provide Food \nfor Homelessness", "Op16.jpg", operator16, 450, 300)
-    Card("Prepare For your \nSecond Term", "Op17.png", operator17, 600, 300)
+    CARDS = [
+        Card("Rental Price \nCeiling", "Op1.jpg", operator01, 20, 0),
+        Card("Build Affordable \nHouses", "Op2.png", operator02, 150, 0),
+        Card("Street Health \nTeam", "Op3.jpg", operator03, 300, 0),
+        Card("Drugs Treatment", "Op4.jpg", operator04, 450, 0),
+        Card("Free Education \nand Shelters", "Op5.jpg", operator05, 600, 0),
+        Card("Free Job \nTraining", "Op6.png", operator06, 750, 0),
+        Card("Provide Job \nOpportunities", "Op7.png", operator07, 900, 0),
+        Card("Tax Increasing", "Op8.jpg", operator08, 1050, 0),
+        Card("Tax Decreasing", "Op9.jpg", operator09, 1200, 0),
+        Card("Provide Portable \nShelter", "Op10.jpg", operator10, 1350, 0),
+        Card("Provide Places \nfor Homeless", "Op11.jpg", operator11, 20, 150),
+        Card("Increase Minimum \nWage", "Op12.png", operator12, 150, 150),
+        Card("Make Homeless \nPriority in Jobs", "Op13.png", operator13, 300, 150),
+        Card("Low Price \nInsurance", "Op14.jpg", operator14, 450, 150),
+        Card("Free College \nTuition", "Op15.png", operator15, 600, 150),
+        Card("Provide Food \nfor Homelessness", "Op16.jpg", operator16, 750, 150),
+        Card("Prepare For your \nSecond Term", "Op17.png", operator17, 900, 150)]
+
+    BACK_BUTTON = tk.Button(master=CARD_FRAME, text="Back", width=10, command=back)
+    BACK_BUTTON.place(x=1100, y=150)
+    QUIT_BUTTON = tk.Button(master=CARD_FRAME, text="QUIT", width=10, command=quit)
+    QUIT_BUTTON.place(x=1100, y=200)
+
+    """
+    op1_img = Image.open("Op15.png")
+    op1_img = op1_img.resize((500, 500), Image.ANTIALIAS)
+    op1_img = ImageTk.PhotoImage(op1_img)
+    images.append(op1_img)
+    op1 = STATUSBAR_CANVAS.create_image(660, 1000, image=op1_img, anchor=tk.CENTER)
+    """
 
 
 def render_state(s):
@@ -285,6 +360,7 @@ def render_state(s):
     money_bar.update(s.money / 5000000000.0)
     housing_price_bar.update(s.housing_price / 2400.0)
     health_points_bar.update(s.health_points / 100.0)
-    employment_rate_bar.update(s.employment_rate / 50.0)
+    employment_rate_bar.update(s.employment_rate / 100.0)
     popularity_bar.update(s.popularity / 100.0)
     homeless_people_bar.update(s.homeless_people / 25000.0)
+    render_homeless_map(s.homeless_people / 15000)

@@ -112,6 +112,7 @@ def take_turn(command):
     global CURRENT_STATE, STATE_STACK, DEPTH, STEP, OPERATORS, APPLICABILITY_VECTOR
     global ROOT
     # print("In take_turn, command is: "+command)
+
     if command == "B" or command == "b":
         if len(STATE_STACK) > 1:
             STATE_STACK.pop()
@@ -119,23 +120,25 @@ def take_turn(command):
             STEP += 1
         else:
             tkprint("You're already back at the initial state.")
-            return
+            return -1
         CURRENT_STATE = STATE_STACK[-1]
         PROBLEM.render_state(CURRENT_STATE)
-        return
+        return -1
 
-    if command == "H" or command == "h": show_instructions(); return
+    if command == "H" or command == "h": show_instructions(); return -1
     if command == "Q" or command == "q": ROOT.destroy()
-    if command == "": return
+    if command == "": return -1
+    if (CURRENT_STATE.is_goal()):
+        return 0
     try:
         i = int(command)
     except:
         tkprint("Unknown command or bad operator number.")
-        return
+        return -1
     tkprint("Operator " + str(i) + " selected.")
     if i < 0 or i >= len(OPERATORS):
         tkprint("There is no operator with number " + str(i))
-        return
+        return -1
     if APPLICABILITY_VECTOR[i]:
         CURRENT_STATE = OPERATORS[i].apply(CURRENT_STATE)
         STATE_STACK.append(CURRENT_STATE)
@@ -143,10 +146,10 @@ def take_turn(command):
         compute_applicability_vector()
         DEPTH += 1
         STEP += 1
-        return
+        return 1
     else:
         tkprint("Operator " + str(i) + " is not applicable to the current state.")
-        return
+        return -1
     # print("Operator "+command+" not yet supported.")
 
 
@@ -164,14 +167,14 @@ if __name__ == '__main__':
 
     if len(sys.argv) < 2:
         """ The following few lines go with the LINUX version of the text client.
-        print('''
-             Usage: 
-      ./IDLE_Text_SOLUZION_Client <PROBLEM NAME>
-             For example:
-      ./IDLE_Text_SOLUZION_Client Missionaries
-        ''')
-        exit(1)
-        """
+    print('''
+         Usage: 
+  ./IDLE_Text_SOLUZION_Client <PROBLEM NAME>
+         For example:
+  ./IDLE_Text_SOLUZION_Client Missionaries
+    ''')
+    exit(1)
+    """
         sys.argv = ['Tk_SOLUZION_Client3.py', problem_name]  # IDLE and Tk version only.
         # Sets up sys.argv as if it were coming in on a Linux command line.
 
