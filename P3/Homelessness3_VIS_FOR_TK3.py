@@ -69,19 +69,14 @@ class Text:
 
 
 class Card:
-    def __init__(self, text, image_path, background_path, operator, x0=0, y0=0):
+    def __init__(self, text, background_path, operator, x0=0, y0=0):
         global ROOT
         global MAP_FRAME
         global images
         self.text = text
-        self.image = Image.open(image_path)
-        self.image = self.image.resize((80, 40), Image.ANTIALIAS)
-        print(self.image)
-        self.image = ImageTk.PhotoImage(self.image)
         self.background_image = Image.open(background_path)
         self.background_image = self.background_image.resize((100, 100), Image.ANTIALIAS)
         self.background_image = ImageTk.PhotoImage(self.background_image)
-        images.append(self.image)
         images.append(self.background_image)
         self.operator = operator
         self.button = tk.Button(CARD_FRAME, image=self.background_image, command=operator, width=100, height=120)
@@ -89,9 +84,8 @@ class Card:
         self.x0 = x0
         self.y0 = y0
         self.text_label = tk.Label(master=CARD_FRAME, text=text)
-        self.text_label.place()
-        self.image_label = tk.Label(master=CARD_FRAME, image=self.image)
-        self.image_label.place()
+        self.text_label.place(x=x0, y=y0+110)
+        print(self.text_label)
 
 
 images = []  # Store images to keep references to images to prevent garbage collection
@@ -192,6 +186,11 @@ def operator17():
     global STATE_TRANS_FUNCTION
     return STATE_TRANS_FUNCTION("17")
 
+"""
+def back():
+    global STATE_TRANS_FUNCTION
+    return STATE_TRANS_FUNCTION("B")
+"""
 
 def initialize_vis(root, current_state, get_operator, state_trans_function):
     global ROOT
@@ -227,7 +226,7 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     # ROOT.resizable(0, 0)
     MAP_FRAME = tk.Frame(master=ROOT, width=270, height=270)
     MAP_FRAME.pack()
-    CARD_FRAME = tk.Frame(master=ROOT, width=1000, height=400)
+    CARD_FRAME = tk.Frame(master=ROOT, width=1000, height=600)
     CARD_FRAME.pack()
     MAP_CANVAS = tk.Canvas(master=MAP_FRAME, width=sf_map_gif.width(), height=sf_map_gif.height())
     MAP_CANVAS.pack(side=tk.LEFT)
@@ -245,23 +244,23 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
 
     # op_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
     # op_frame.pack()
-    Card("Rental Price Ceiling", "Op1.jpg", "Op1.jpg", operator01, 0, 0)
-    Card("Build Affordable Houses", "Op2.png", "Op2.png", operator02, 100, 0)
-    Card("Street Health Care Team", "Op3.jpg", "Op3.jpg", operator03, 200, 0)
-    Card("Drugs Users Treatment", "Op4.jpg", "Op4.jpg", operator04, 300, 0)
-    Card("Free Education and Shelters for Homeless Children", "Op5.jpg", "Op5.jpg", operator05, 400, 0)
-    Card("Rental Price Ceiling", "Op6.png", "Op6.png", operator06, 500, 0)
-    Card("Rental Price Ceiling", "Op7.png", "Op7.png", operator07, 600, 0)
-    Card("Rental Price Ceiling", "Op8.jpg", "Op8.jpg", operator08, 700, 0)
-    Card("Rental Price Ceiling", "Op9.jpg", "Op9.jpg", operator09, 800, 0)
-    Card("Rental Price Ceiling", "Op10.jpg", "Op10.jpg", operator10, 0, 150)
-    Card("Rental Price Ceiling", "Op11.jpg", "Op11.jpg", operator11, 100, 150)
-    Card("Rental Price Ceiling", "Op12.png", "Op12.png", operator12, 200, 150)
-    Card("Rental Price Ceiling", "Op13.png", "Op13.png", operator13, 300, 150)
-    Card("Rental Price Ceiling", "Op14.jpg", "Op14.jpg", operator14, 400, 150)
-    Card("Rental Price Ceiling", "Op15.png", "Op15.png", operator15, 500, 150)
-    Card("Rental Price Ceiling", "Op16.jpg", "Op16.jpg", operator16, 600, 150)
-    Card("Rental Price Ceiling", "Op17.png", "Op17.png", operator17, 700, 150)
+    Card("Rental Price \nCeiling", "Op1.jpg", operator01, 20, 0)
+    Card("Build Affordable \nHouses", "Op2.png", operator02, 150, 0)
+    Card("Street Health \nTeam", "Op3.jpg", operator03, 300, 0)
+    Card("Drugs Treatment", "Op4.jpg", operator04, 450, 0)
+    Card("Free Education \nand Shelters", "Op5.jpg", operator05, 600, 0)
+    Card("Free Job \nTraining", "Op6.png", operator06, 750, 0)
+    Card("Provide Job \nOpportunities", "Op7.png", operator07, 20, 150)
+    Card("Tax Increasing", "Op8.jpg", operator08, 150, 150)
+    Card("Tax Decreasing", "Op9.jpg", operator09, 300, 150)
+    Card("Provide Portable \nShelter", "Op10.jpg", operator10, 450, 150)
+    Card("Provide Places \nfor Homeless", "Op11.jpg", operator11, 600, 150)
+    Card("Increase Minimum \nWage", "Op12.png", operator12, 750, 150)
+    Card("Make Homeless \nPriority in Jobs", "Op13.png", operator13, 20, 300)
+    Card("Low Price \nInsurance", "Op14.jpg", operator14, 150, 300)
+    Card("Free College \nTuition", "Op15.png", operator15, 300, 300)
+    Card("Provide Food \nfor Homelessness", "Op16.jpg", operator16, 450, 300)
+    Card("Prepare For your \nSecond Term", "Op17.png", operator17, 600, 300)
 
 
 def render_state(s):
