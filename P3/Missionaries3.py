@@ -1,4 +1,4 @@
-'''Missionaries.py
+'''Missionaries3.py
 ("Missionaries and Cannibals" problem)
 A SOLUZION problem formulation.  UPDATED AUGUST 2018.
 The XML-like tags used here may not be necessary, in the end.
@@ -7,19 +7,16 @@ problem formulation.  It is important that COMMON_CODE come
 before all the other sections (except METADATA), including COMMON_DATA.
 '''
 #<METADATA>
-SOLUZION_VERSION = "0.2"
+SOLUZION_VERSION = "0.3"
 PROBLEM_NAME = "Missionaries and Cannibals"
 PROBLEM_VERSION = "0.3"
 PROBLEM_AUTHORS = ['S. Tanimoto']
-PROBLEM_CREATION_DATE = "28-AUG-2018"
+PROBLEM_CREATION_DATE = "16-SEP-2019"
 PROBLEM_DESC=\
-'''This version differs from earlier ones by (a) using a new
+'''This version differs from earlier ones by using a new
 State class to represent problem states, rather than just
-a dictionary, and (b) avoidance of list comprehensions
-and the use of default parameter values in lambda expressions.
-
-The following are new methods here for the State version of
-the formulation:
+a dictionary.  The dict is still here, but wrapped in the
+State class.  The following are new methods here:
 __eq__, __hash__, __str__, and the implcit constructor State().
 
 The previous version was written to accommodate the
@@ -29,12 +26,7 @@ However, everything else is generic Python 3, and this file is intended
 to work a future Python+Tkinter client that runs on the desktop.
 Anything specific to the Brython context should be in the separate 
 file MissionariesVisForBRYTHON.py, which is imported by this file when
-being used in the Brython SOLUZION client.
-
-The operators are defined here in the same order as on the
-worksheet "Depth-First Search for the M&C Problem."
-'''
-
+being used in the Brython SOLUZION client.'''
 #</METADATA>
 
 #<COMMON_DATA>
@@ -115,7 +107,6 @@ class State:
     return (nmr+ncr==6)
 
   def __eq__(self, s2):
-    if s2==None: return False
     if self.n_boats_on_right != s2.n_boats_on_right: return False
     if self.n_missionaries_on_right != s2.n_missionaries_on_right: return False
     if self.n_cannibals_on_right != s2.n_cannibals_on_right: return False
@@ -156,27 +147,13 @@ INITIAL_STATE = State()
 #</INITIAL_STATE>
 
 #<OPERATORS>
-phi0 = Operator("Cross the river with 1 missionary",
-  lambda s: s.can_move(1,0),
-  lambda s: s.move(1,0))
+MC_combinations = [(1,0),(2,0),(3,0),(1,1),(2,1)]
 
-phi1 = Operator("Cross the river with 2 missionaries",
-  lambda s: s.can_move(2,0),
-  lambda s: s.move(2,0))
-
-phi2 = Operator("Cross the river with 1 missionary and 1 cannibal",
-  lambda s: s.can_move(1,1),
-  lambda s: s.move(1,1))
-
-phi3 = Operator("Cross the river with 2 missionaries and 1 cannibal",
-  lambda s: s.can_move(2,1),
-  lambda s: s.move(2,1))
-
-phi4 = Operator("Cross the river with 3 missionaries",
-  lambda s: s.can_move(3,0),
-  lambda s: s.move(3,0))
-
-OPERATORS = [phi0, phi1, phi2, phi3, phi4]
+OPERATORS = [Operator(
+  "Cross the river with "+str(m1)+" missionaries and "+str(c1)+" cannibals",
+  lambda s,m=m1,c=c1: s.can_move(m,c),
+  lambda s,m=m1,c=c1: s.move(m,c) ) 
+  for (m1,c1) in MC_combinations]
 #</OPERATORS>
 
 #<GOAL_TEST> (optional)

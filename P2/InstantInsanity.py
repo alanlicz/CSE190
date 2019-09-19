@@ -2,7 +2,7 @@
 SOLUZION_VERSION = "0.2"
 PROBLEM_NAME = "Instant Insanity"
 PROBLEM_VERSION = "0.1"
-PROBLEM_AUTHORS = ['Marco Xu', 'Alan Li', 'Ethan Jiang']
+PROBLEM_AUTHORS = ['Marco.Xu', 'Alan Li', 'Ethan Jiang']
 PROBLEM_CREATION_DATE = "04-SEP-2019"
 
 # </METADATA>
@@ -14,15 +14,14 @@ colors = ["Red", "Green", "Blue", "White"]
 # <COMMON_CODE>
 
 import random
-from collections import deque
 
 
 # Red 0 Green 1 Blue 2 White 3
 #
 # Cube face
 #
-# Yaw clockwise:0 to 4 to 2 to 5
-# Pitch clockwise:0
+#Yaw clockwise:0 to 4 to 2 to 5
+#Pitch clockwise:0
 #  Pitch
 #    _4_
 # |0|1(Yaw)|2|3 Roll
@@ -31,49 +30,49 @@ from collections import deque
 #
 
 class Cube:
-    def __init__(self, old=None):
-        self.faces = [0, 0, 0, 0, 0, 0]
-        color_count = [0, 0, 0, 0]
-        for i in range(6):
-            color = random.randint(0, 3)
-            while color_count[color] >= 2:
-                color = random.randint(0, 3)
-            # if a cube already has 2 same color faces, change the color.
-            self.faces[i] = color
-            color_count[color] += 1
+    def __init__(self,old=None):
         if old:
-            self.faces = old.faces[:]
-
+            self.faces=old.faces[:]
+        else:
+            self.faces = [0, 0, 0, 0, 0, 0]
+            color_count = [0, 0, 0, 0]
+            for i in range(6):
+                color = random.randint(0, 3)
+                while color_count[color] >= 3:
+                    color = random.randint(0, 3)
+                # if a cube already has 3 same color faces, change the color.
+                self.faces[i] = color
+                color_count[color] += 1
     def yawRotate(self, is_clockwise):
         yaw_index_s0 = [0, 4, 2, 5]
         # two faces will not change during the rotation, so there are only 4 elements
         if is_clockwise:
-            yaw_index_s1 = [5, 0, 4, 2]
+            yaw_index_s1 = [4,2,5,0]
             temp = [0, 0, 0, 0]
             for i in range(4):
-                temp[i] = self.faces[yaw_index_s1[i]]
+                temp[i] = self.faces[yaw_index_s0[i]]
             for i in range(4):
-                self.faces[yaw_index_s0[i]] = temp[i]
+                self.faces[yaw_index_s1[i]] = temp[i]
 
     def rollRotate(self, isClockWise):
-        pitch_index_s0 = [0, 1, 2, 3]
-        if isClockWise:
-            pitch_index_s1 = [3, 0, 1, 2]
+        pitch_index_s0 = [1, 5, 3, 4]
+        if isClockWise == 1:
+            pitch_index_s1 = [5, 3, 4, 1]
             temp = [0, 0, 0, 0]
             for i in range(4):
-                temp[i] = self.faces[pitch_index_s1[i]]
+                temp[i] = self.faces[pitch_index_s0[i]]
             for i in range(4):
-                self.faces[pitch_index_s0[i]] = temp[i]
+                self.faces[pitch_index_s1[i]] = temp[i]
 
     def pitchRotate(self, isForward):
-        roll_index_s0 = [1, 4, 3, 5]
+        roll_index_s0 = [0, 1, 2, 3]
         if isForward:
-            roll_index_s1 = [5, 1, 4, 3]
+            roll_index_s1 = [1, 2, 3, 0]
             temp = [0, 0, 0, 0]
             for i in range(4):
-                temp[i] = self.faces[roll_index_s1[i]]
+                temp[i] = self.faces[roll_index_s0[i]]
             for i in range(4):
-                self.faces[roll_index_s0[i]] = temp[i]
+                self.faces[roll_index_s1[i]] = temp[i]
 
     def __str__(self):
         return "\n      [" + colors[self.faces[4]] + "]\n" + "[" + colors[self.faces[0]] + "]" + \
@@ -86,10 +85,11 @@ class Cube:
 
 
 # Face 4 is default downside
+
 class State:
     def __init__(self, old=None):
         if old:
-            self.cubes = [Cube(old.cubes[i]) for i in range(4)]
+            self.cubes=[Cube(old.cubes[i]) for i in range(4)]
         else:
             self.cubes = [Cube() for i in range(4)]
 

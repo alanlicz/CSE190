@@ -8,10 +8,7 @@
     """
 
 # The following line is used in the Tk_SOLUZION_Client and the IDLE_Text_SOLUZION_Client.
-from P3.Homelessness3_VIS_FOR_TK3 import ROOT
-from P3.Tk_SOLUZION_Client3 import get_choices, take_turn, CURRENT_STATE
-
-problem_name = 'Homelessness3'
+problem_name = 'Homelessness'
 policy_is_set = True  # Chance this to False if you want the player to prompt the user to set the mode.
 MODE = 0  # Default mode is random moves.
 
@@ -148,13 +145,13 @@ except Exception as e:
     exit(1)
 
 try:
-    spec = importlib.util.spec_from_file_location(problem_name + '_VIS_FOR_TK3',
-                                                  problem_name + '_VIS_FOR_TK3.py')
+    spec = importlib.util.spec_from_file_location(problem_name + '_Array_VIS_FOR_TK',
+                                                  problem_name + '_Array_VIS_FOR_TK.py')
     VIS = spec.loader.load_module()
     spec.loader.exec_module(VIS)
     print("Using TK vis routine")
     PROBLEM.render_state = VIS.render_state
-    VIS.initialize_vis(ROOT, CURRENT_STATE, get_choices, take_turn)
+    VIS.initialize_vis()
 except Exception as e:
     print(e)
     exit(1)
@@ -181,6 +178,8 @@ class AutoPlayer(threading.Thread):
 # The following is only executed if this module is being run as the main
 # program, rather than imported from another one.
 if __name__ == '__main__':
-    player = AutoPlayer(PROBLEM.STATE_WINDOW)
-    PROBLEM.STATE_WINDOW.mainloop()
+    import show_state_array
+
+    player = AutoPlayer(show_state_array.STATE_WINDOW)
+    show_state_array.STATE_WINDOW.mainloop()
     print("The session is finished.")

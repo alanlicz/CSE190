@@ -159,14 +159,17 @@ class State:
         if self.money < money_threshold:
             return "Your government is Bankrupted!"
         if self.low_popularity_count > low_popularity_count_threshold:
-            return "Your people are disappointed in you and legislators has passed the Impeachment Bill!\nYou are Thrown Out of Office!"
+            return "Your people are disappointed in you and legislators has passed the Impeachment Bill!\n" \
+                   "You are Thrown Out of Office!"
 
         if self.quarter_num == 17 and (self.popularity <= 60 or (not self.second_term_flag)):
             return "You Stepped Down after your First term\n" + (
-                "You Successfully solved homeless problem!" if self.homeless_people <= homeless_people_threshold else "You Failed to solve homeless problem")
+                "You Successfully solved homeless problem!" if self.homeless_people <= homeless_people_threshold
+                else "You Failed to solve homeless problem")
         if self.quarter_num > 32:
             return "You Stepped Down after your Second term\n" + (
-                "You Successfully solved homeless problem!" if self.homeless_people <= homeless_people_threshold else "You Failed to solve homeless problem")
+                "You Successfully solved homeless problem!" if self.homeless_people <= homeless_people_threshold
+                else "You Failed to solve homeless problem")
 
     def __eq__(self, s2):
         if s2 == None:

@@ -28,7 +28,7 @@ def rgb2hex(rgb):
 
 class StatusBar:
     def __init__(self, text, x0, y0, length, width, background, fill_color):
-        self.text=text
+        self.text = text
         self.x0 = x0
         self.y0 = y0
         self.length = length
@@ -39,9 +39,8 @@ class StatusBar:
                                                             fill=rgb2hex(self.background))
         self.bar_fill = ssa.STATE_WINDOW.canvas.create_rectangle(x0, y0, x0, y0 + self.width,
                                                                  fill=rgb2hex(self.fill_color))
-        self.text_item=ssa.STATE_WINDOW.canvas.create_text(x0-110,y0+5,text=self.text,justify=tk.LEFT,anchor=tk.W)
-        
-        
+        self.text_item = ssa.STATE_WINDOW.canvas.create_text(x0 - 110, y0 + 5, text=self.text, justify=tk.LEFT,
+                                                             anchor=tk.W)
 
     def update(self, percentage):
         ssa.STATE_WINDOW.canvas.delete(self.bar_fill)
@@ -49,28 +48,23 @@ class StatusBar:
         self.bar_fill = ssa.STATE_WINDOW.canvas.create_rectangle(self.x0, self.y0,
                                                                  self.x0 + percentage * self.length,
                                                                  self.y0 + self.width, fill=rgb2hex(self.fill_color))
-        self.text_item=ssa.STATE_WINDOW.canvas.create_text(self.x0-110,self.y0+5,text=self.text,justify=tk.LEFT,anchor=tk.W)
+        self.text_item = ssa.STATE_WINDOW.canvas.create_text(self.x0 - 110, self.y0 + 5, text=self.text,
+                                                             justify=tk.LEFT, anchor=tk.W)
 
 
-class Card:
-    def __init__(self, x0,y0,text,image,color,master=ssa.STATE_WINDOW):
-        self.text = text
-        self.image = image
-        self.color=color        
-        self.button = tk.Button(master, image=image)
-
-        
-
-"""
 class Button:
-    def __init__(self, container, text, image):
+    def __init__(self, x0, y0, container, image):
         self.container = container
-        self.text = text
         self.image = image
-        # self.command = command
-        self.button = tk.Button(master=self.container, text=self.text, image=self.image)
-        self.button.tk.place()
-"""
+        self.x0 = x0
+        self.y0 = y0
+        tempimg = Image.open(self.image)
+        tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
+        tempimg = ImageTk.PhotoImage(tempimg)
+        images.append(tempimg)
+        self.button = tk.Button(master=self.container, image=tempimg)
+        self.button.grid(row=self.x0, column=self.y0)
+
 
 images = []  # Store images to keep references to images to prevent garbage collection
 
@@ -98,36 +92,32 @@ def initialize_vis():
 
     initialize_tk(WIDTH, HEIGHT, TITLE)
     table = ssa.STATE_WINDOW.canvas.create_rectangle(600, 0, 1200, 200, fill=rgb2hex(background))
-    money_bar = StatusBar("Money",800, 20, 200, 20, blue, green)
-    housing_price_bar = StatusBar("Housing Price",800, 50, 200, 20, blue, yellow)
-    health_points_bar = StatusBar("Health Points",800, 80, 200, 20, blue, purple)
-    employment_rate_bar = StatusBar("Employment Rate",800, 110, 200, 20, blue, cyan)
-    popularity_bar = StatusBar("Popularity",800, 140, 200, 20, blue, orange)
-    homeless_people_bar = StatusBar("Homeless People",800, 170, 200, 20, blue, tan)
+    money_bar = StatusBar("Money", 800, 20, 200, 20, blue, green)
+    housing_price_bar = StatusBar("Housing Price", 800, 50, 200, 20, blue, yellow)
+    health_points_bar = StatusBar("Health Points", 800, 80, 200, 20, blue, purple)
+    employment_rate_bar = StatusBar("Employment Rate", 800, 110, 200, 20, blue, cyan)
+    popularity_bar = StatusBar("Popularity", 800, 140, 200, 20, blue, orange)
+    homeless_people_bar = StatusBar("Homeless People", 800, 170, 200, 20, blue, tan)
 
-
-
-    tempimg = Image.open("Op1.jpg")
-    tempimg = tempimg.resize((100, 100), Image.ANTIALIAS)
-    tempimg = ImageTk.PhotoImage(tempimg)
-    op1_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
-    op1_frame.pack()
-    op1_button = tk.Button(op1_frame, text="Rental Price Ceiling")
-    op1_button.grid(row=1, column=1)
-    op1_button = tk.Button(op1_frame, text="Build Affordable Houses")
-    op1_button.grid(row=1, column=2)
-    op1_button = tk.Button(op1_frame, text="Street Health Care Team")
-    op1_button.grid(row=1, column=3)
-    op1_button = tk.Button(op1_frame, text="Free Education and Shelters for Homeless Children")
-    op1_button.grid(row=1, column=4)
-    op1_button = tk.Button(op1_frame, text="Drugs Users Treatment")
-    op1_button.grid(row=1, column=5)
-    op1_button = tk.Button(op1_frame, text="Drugs Users Treatment")
-    op1_button.grid(row=1, column=6)
-    op1_button = tk.Button(op1_frame, text="Drugs Users Treatment")
-    op1_button.grid(row=2, column=1)
-    op1_button = tk.Button(op1_frame, text="Drugs Users Treatment")
-    op1_button.grid(row=2, column=2)
+    op_frame = tk.Frame(height=300, width=1000, master=ssa.STATE_WINDOW)
+    op_frame.pack()
+    Button(1, 1, op_frame, "Op1.jpg")
+    Button(1, 2, op_frame, "Op2.png")
+    Button(1, 3, op_frame, "Op3.jpg")
+    Button(1, 4, op_frame, "Op4.jpg")
+    Button(1, 5, op_frame, "Op5.jpg")
+    Button(1, 6, op_frame, "Op6.png")
+    Button(1, 7, op_frame, "Op7.png")
+    Button(1, 8, op_frame, "Op8.jpg")
+    Button(1, 9, op_frame, "Op9.jpg")
+    Button(2, 1, op_frame, "Op10.jpg")
+    Button(2, 2, op_frame, "Op11.jpg")
+    Button(2, 3, op_frame, "Op12.png")
+    Button(2, 4, op_frame, "Op13.png")
+    Button(2, 5, op_frame, "Op14.jpg")
+    Button(2, 6, op_frame, "Op15.png")
+    Button(2, 7, op_frame, "Op16.jpg")
+    Button(2, 8, op_frame, "Op17.pn3g")
 
     try:
         sf_map_gif = Image.open("SFMap.png")
@@ -144,14 +134,6 @@ def initialize_vis():
         print("Failed to Display SF Map!")
         print(e)
 
-    """
-    op1_img = Image.open("Op15.png")
-    op1_img = op1_img.resize((500, 500), Image.ANTIALIAS)
-    op1_img = ImageTk.PhotoImage(op1_img)
-    images.append(op1_img)
-    op1 = ssa.STATE_WINDOW.canvas.create_image(660, 1000, image=op1_img, anchor=tk.CENTER)
-    """
-
 
 def render_state(s):
     # Note that font creation is only allowed after the Tk root has been
@@ -167,12 +149,12 @@ def render_state(s):
     global myFont
     if not myFont:
         myFont = tk.font.Font(family="Helvetica", size=18, weight="bold")
-    money_bar.text="Money\n{:,}".format(int(s.money))
-    housing_price_bar.text="Housing Price\n{:.1f}".format(s.housing_price)
-    health_points_bar.text="Health Points\n{:.1f}".format(s.health_points)
-    employment_rate_bar.text="Employment Rate\n{:.1f}".format(s.employment_rate)
-    popularity_bar.text="Popularity\n{:.1f}".format(s.popularity)
-    homeless_people_bar.text="Homeless People\n{:.0f}".format(s.homeless_people)
+    money_bar.text = "Money\n{:,}".format(int(s.money))
+    housing_price_bar.text = "Housing Price\n{:.1f}".format(s.housing_price)
+    health_points_bar.text = "Health Points\n{:.1f}".format(s.health_points)
+    employment_rate_bar.text = "Employment Rate\n{:.1f}".format(s.employment_rate)
+    popularity_bar.text = "Popularity\n{:.1f}".format(s.popularity)
+    homeless_people_bar.text = "Homeless People\n{:.0f}".format(s.homeless_people)
     money_bar.update(s.money / 5000000000.0)
     housing_price_bar.update(s.housing_price / 2400.0)
     health_points_bar.update(s.health_points / 100.0)

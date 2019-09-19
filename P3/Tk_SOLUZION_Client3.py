@@ -112,7 +112,6 @@ def take_turn(command):
     global CURRENT_STATE, STATE_STACK, DEPTH, STEP, OPERATORS, APPLICABILITY_VECTOR
     global ROOT
     # print("In take_turn, command is: "+command)
-
     if command == "B" or command == "b":
         if len(STATE_STACK) > 1:
             STATE_STACK.pop()
@@ -128,7 +127,8 @@ def take_turn(command):
     if command == "H" or command == "h": show_instructions(); return -1
     if command == "Q" or command == "q": ROOT.destroy()
     if command == "": return -1
-    if (CURRENT_STATE.is_goal()):
+    if CURRENT_STATE.is_goal():
+        PROBLEM.render_state(CURRENT_STATE)
         return 0
     try:
         i = int(command)

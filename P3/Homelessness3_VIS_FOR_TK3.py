@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import font
+from tkinter import font, messagebox
 from PIL import Image, ImageTk
 import random
 
@@ -87,7 +87,6 @@ class Card:
         self.y0 = y0
         self.text_label = tk.Label(master=CARD_FRAME, text=text)
         self.text_label.place(x=x0, y=y0 + 110)
-        print(self.text_label)
 
 
 """
@@ -289,8 +288,8 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     MAP_CANVAS.pack(side=tk.LEFT)
     MAP_CANVAS.create_image(0, 0, image=sf_map_gif, anchor=tk.NW)
 
-    homeless_icon = Image.open("Op1.jpg")
-    homeless_icon = homeless_icon.resize((20, 20), Image.ANTIALIAS)
+    homeless_icon = Image.open("icon.jpg")
+    homeless_icon = homeless_icon.resize((5, 10), Image.ANTIALIAS)
     homeless_icon = ImageTk.PhotoImage(homeless_icon)
     images.append(homeless_icon)
     STATUSBAR_CANVAS = tk.Canvas(master=MAP_FRAME, width=900, height=300)
@@ -328,6 +327,8 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     QUIT_BUTTON = tk.Button(master=CARD_FRAME, text="QUIT", width=10, command=quit)
     QUIT_BUTTON.place(x=1100, y=200)
 
+
+
     """
     op1_img = Image.open("Op15.png")
     op1_img = op1_img.resize((500, 500), Image.ANTIALIAS)
@@ -364,3 +365,7 @@ def render_state(s):
     popularity_bar.update(s.popularity / 100.0)
     homeless_people_bar.update(s.homeless_people / 25000.0)
     render_homeless_map(s.homeless_people / 15000)
+    QUIT_BUTTON = tk.Button(master=CARD_FRAME, text="Quarter Count= " + str(s.quarter_num), width=20, command=quit)
+    QUIT_BUTTON.place(x=1100, y=300)
+    if s.is_goal():
+        tk.messagebox.showerror("Game Message", s.goal_message())

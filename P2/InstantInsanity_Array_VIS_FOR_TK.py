@@ -19,6 +19,7 @@ black = (76, 74, 72)
 background = (126, 115, 95)
 cube_colors = [(232, 17, 35), (16, 124, 16), (0, 120, 215), (220, 220, 220)]
 
+the_state_array = None
 
 def initialize_vis():
     initialize_tk(WIDTH, HEIGHT, TITLE)
@@ -44,7 +45,6 @@ def render_state(s):
         myFont = font.Font(family="Helvetica", size=18, weight="bold")
     print("In render_state, state is " + str(s))
     # Create the default array of colors
-
     row = [background for i in range(12)]
     the_color_array = [row[:] for i in range(15)]
     # Now create the default array of string labels.
@@ -81,9 +81,16 @@ def render_state(s):
     # Adjust colors and strings to match the state.
 
     caption = "Current state of the puzzle. Textual version: " + str(s)
-    the_state_array = state_array(color_array=the_color_array,
+    global the_state_array
+    if not the_state_array:
+        the_state_array = state_array(color_array=the_color_array,
                                   string_array=the_string_array,
                                   text_font=myFont,
                                   caption=caption)
+    else:
+        the_state_array.color_array=the_color_array
+        the_state_array.string_array=the_string_array
+        the_state_array.text_font=myFont
+        the_state_array.caption=caption
     # print("the_state_array is: "+str(the_state_array))
     the_state_array.show()
