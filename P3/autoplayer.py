@@ -8,7 +8,7 @@
     """
 
 # The following line is used in the Tk_SOLUZION_Client and the IDLE_Text_SOLUZION_Client.
-problem_name = 'Homelessness'
+problem_name = 'Homelessness3'
 policy_is_set = True  # Chance this to False if you want the player to prompt the user to set the mode.
 MODE = 0  # Default mode is random moves.
 
@@ -145,8 +145,8 @@ except Exception as e:
     exit(1)
 
 try:
-    spec = importlib.util.spec_from_file_location(problem_name + '_Array_VIS_FOR_TK',
-                                                  problem_name + '_Array_VIS_FOR_TK.py')
+    spec = importlib.util.spec_from_file_location(problem_name + '_VIS_FOR_TK3',
+                                                  problem_name + '_VIS_FOR_TK3.py')
     VIS = spec.loader.load_module()
     spec.loader.exec_module(VIS)
     print("Using TK vis routine")

@@ -63,9 +63,9 @@ class Card:
         tempimg = ImageTk.PhotoImage(tempimg)
         images.append(tempimg)
         self.op_temp_button = tk.Button(op_frame, text=self.temp_text, image=tempimg)
-
-    def place_button(self, input_row, input_column):
-        self.op_temp_button.grid(row=input_row, column=input_column)
+        self.text_label = tk.Label(master=op_frame, text="11111")
+        self.text_label.place(rely=0.1)
+        self.op_temp_button.place(x=0, y=0)
 
 
 images = []  # Store images to keep references to images to prevent garbage collection
@@ -110,10 +110,11 @@ def initialize_vis():
     Text(680, 150, "Popularity")
     Text(680, 180, "Homeless People")
 
-    op_frame = tk.Frame(height=50, width=300, master=ssa.STATE_WINDOW)
+    op_frame = tk.Frame(height=350, width=1000, master=ssa.STATE_WINDOW)
     op_frame.pack()
     op1_button = Card("Rental Price Ceiling", "Op1.jpg")
-    op1_button.place_button(1, 1)
+
+    """
     op2_button = Card("Build Affordable Houses", "Op2.png")
     op2_button.place_button(1, 2)
     op3_button = Card("Rental Price Ceiling", "Op3.jpg")
@@ -124,7 +125,6 @@ def initialize_vis():
     op5_button.place_button(1, 5)
     op6_button = Card("Rental Price Ceiling", "Op6.png")
     op6_button.place_button(1, 6)
-    """
     op7_button = Card("Rental Price Ceiling")
     op7_button.place_button(1, 7)
     op8_button = Card("Rental Price Ceiling")

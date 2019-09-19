@@ -12,8 +12,6 @@ STATUSBAR_CANVAS = None
 GET_OPERATOR = None
 STATE_TRANS_FUNCTION = None
 
-WIDTH = 1024
-HEIGHT = 600
 TITLE = 'Homelessness'
 
 tan = (132, 117, 69)
@@ -84,8 +82,7 @@ class Card:
         self.x0 = x0
         self.y0 = y0
         self.text_label = tk.Label(master=CARD_FRAME, text=text)
-        self.text_label.place(x=x0, y=y0+110)
-        print(self.text_label)
+        self.text_label.place(x=x0, y=y0 + 110)
 
 
 images = []  # Store images to keep references to images to prevent garbage collection
@@ -186,11 +183,13 @@ def operator17():
     global STATE_TRANS_FUNCTION
     return STATE_TRANS_FUNCTION("17")
 
+
 """
 def back():
     global STATE_TRANS_FUNCTION
     return STATE_TRANS_FUNCTION("B")
 """
+
 
 def initialize_vis(root, current_state, get_operator, state_trans_function):
     global ROOT
@@ -224,7 +223,7 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
 
     ROOT = root
     # ROOT.resizable(0, 0)
-    MAP_FRAME = tk.Frame(master=ROOT, width=270, height=270)
+    MAP_FRAME = tk.Frame(master=ROOT, width=570, height=570)
     MAP_FRAME.pack()
     CARD_FRAME = tk.Frame(master=ROOT, width=1000, height=600)
     CARD_FRAME.pack()
