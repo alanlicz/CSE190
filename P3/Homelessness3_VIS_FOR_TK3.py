@@ -334,8 +334,8 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
                                            "In this game, you will act as the government to solve the homelessness "
                                            "issue in San Francisco. In each turn, you will be provided several choices "
                                            "which help you solve the issue. Try to solve the problem without being "
-                                           "overthrown by voters or getting bankrupt.\n IMPORTANT: YOU MUST PRESS PREPARE "
-                                           " FOR YOUR SECOND TERM AT YOUR LAST QUARTER IN A TERM")
+                                           "overthrown by voters or getting bankrupt.\n IMPORTANT: YOU MUST PRESS GET "
+                                           "READY FOR ELECTION AT YOUR LAST QUARTER IN A TERM")
     help_button = tk.Button(master=CARD_FRAME, text="HELP", command=click_on_file, activeforeground="red",
                             activebackground="yellow")
     help_button.place(x=1250, y=250)
@@ -367,7 +367,7 @@ def render_state(s):
         myFont = tk.font.Font(family="Helvetica", size=18, weight="bold")
     bad_events = ["earthquake", "flood", "tornado", "tsunami", "typhoon", "volcano eruption", "flu outbreak"]
     good_events = ["discover a gold mine accidentally", "discover new oilfield", "receive donations from billionaire"]
-    random_num = random.randint(1, 18)
+    random_num = random.randint(1, 16)
     if random_num == 3:
         random_event = random.randint(0, len(bad_events)-1)
         tk.messagebox.showinfo("Game message", "A(An) " + bad_events[random_event] + " hit San Francisco!\n"
@@ -377,8 +377,10 @@ def render_state(s):
                                                                                      "Popularity-7")
         s.money -= 300000000
         s.health_points -= 10
+        s.health_points = 0 if s.health_points < 0 else s.health_points
         s.homeless_people += 1000
         s.popularity -= 7
+        s.popularity = 0 if s.popularity < 0 else s.popularity
 
     if random_num == 7:
         random_event = random.randint(0, len(good_events)-1)
@@ -388,6 +390,7 @@ def render_state(s):
         s.money += 400000000
         s.homeless_people -= 500
         s.popularity += 7
+        s.popularity = 100 if s.popularity > 100 else s.popularity
 
     money_bar.text = "Money\n{:,}".format(int(s.money))
     housing_price_bar.text = "Housing Price\n{:.1f}".format(s.housing_price)
