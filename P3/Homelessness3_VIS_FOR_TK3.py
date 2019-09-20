@@ -88,8 +88,8 @@ class Card:
         self.button.place(x=x0, y=y0)
         self.x0 = x0
         self.y0 = y0
-        self.text_label = tk.Label(master=CARD_FRAME, text=text)
-        self.text_label.place(x=x0+10, y=y0 + 110)
+        self.text_label = tk.Label(master=CARD_FRAME, text=text, font="Helvetica 13", justify="center")
+        self.text_label.place(x=x0, y=y0 + 110)
 
 
 """
@@ -226,7 +226,7 @@ def render_homeless_map(homeless_percentage):
     global homeless_items_downtown
     if int(HOMELESS_ITEMS_FACTOR * homeless_percentage) - len(homeless_items) >= 0:
         for i in range(0, int(HOMELESS_ITEMS_FACTOR * homeless_percentage) - len(homeless_items)):
-            homeless_items.append(MAP_CANVAS.create_image(int(random.uniform(40, 380)), int(random.uniform(170, 500)),
+            homeless_items.append(MAP_CANVAS.create_image(int(random.uniform(40, 355)), int(random.uniform(190, 500)),
                                                           image=homeless_icon))
     else:
         for i in range(0, len(homeless_items) - int(HOMELESS_ITEMS_FACTOR * homeless_percentage)):
@@ -237,7 +237,7 @@ def render_homeless_map(homeless_percentage):
     if int(HOMELESS_ITEMS_FACTOR * homeless_percentage) - len(homeless_items_downtown) >= 0:
         for i in range(0, int(HOMELESS_ITEMS_FACTOR * homeless_percentage) - len(homeless_items_downtown)):
             homeless_items_downtown.append(
-                MAP_CANVAS.create_image(int(random.uniform(180, 380)), int(random.uniform(120, 320)),
+                MAP_CANVAS.create_image(int(random.uniform(180, 355)), int(random.uniform(120, 320)),
                                         image=homeless_icon))
     else:
         for i in range(0, len(homeless_items_downtown) - int(HOMELESS_ITEMS_FACTOR * homeless_percentage)):
@@ -272,7 +272,6 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
     STATE_TRANS_FUNCTION = state_trans_function
     GET_OPERATOR = get_operator
     GOAL_MESSAGE_FUNCTION = current_state.goal_message
-
     try:
         sf_map_gif = Image.open("SFMap.png")
         sf_map_gif = sf_map_gif.resize((500, 500), Image.ANTIALIAS)
@@ -312,7 +311,7 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
         Card("Street Health \nTeam", "Op3.jpg", operator03, 300, 0),
         Card("Drugs Treatment", "Op4.jpg", operator04, 450, 0),
         Card("Free Education \nand Shelters", "Op5.jpg", operator05, 600, 0),
-        Card("Free Job \nTraining", "Op6.png", operator06, 750, 0),
+        Card("Free Job Training", "Op6.png", operator06, 750, 0),
         Card("Provide Job \nOpportunities", "Op7.png", operator07, 900, 0),
         Card("Tax Increasing", "Op8.jpg", operator08, 1050, 0),
         Card("Tax Decreasing", "Op9.jpg", operator09, 1200, 0),
@@ -320,25 +319,31 @@ def initialize_vis(root, current_state, get_operator, state_trans_function):
         Card("Provide Places \nfor Homeless", "Op11.jpg", operator11, 20, 150),
         Card("Increase Minimum \nWage", "Op12.png", operator12, 150, 150),
         Card("Make Homeless \nPriority in Jobs", "Op13.png", operator13, 300, 150),
-        Card("Low Price \nInsurance", "Op14.jpg", operator14, 450, 150),
+        Card("Low     Price \nInsurance", "Op14.jpg", operator14, 450, 150),
         Card("Free College \nTuition", "Op15.png", operator15, 600, 150),
         Card("Provide Food \nfor Homelessness", "Op16.jpg", operator16, 750, 150),
         Card("Prepare For your \nSecond Term", "Op17.png", operator17, 900, 150)]
 
-    BACK_BUTTON = tk.Button(master=CARD_FRAME, text="Back", width=10, command=back)
+    BACK_BUTTON = tk.Button(master=CARD_FRAME, text="Back", width=10, command=back, activeforeground="red",
+                            activebackground="yellow")
     BACK_BUTTON.place(x=1100, y=150)
-    QUIT_BUTTON = tk.Button(master=CARD_FRAME, text="QUIT", width=10, command=quit)
+    QUIT_BUTTON = tk.Button(master=CARD_FRAME, text="QUIT", width=10, command=quit, activeforeground="red",
+                            activebackground="yellow")
     QUIT_BUTTON.place(x=1100, y=200)
-    tk.messagebox.showinfo("1111", "Game title: Can You Solve Homelessness Issue in San Fransisco?\n \n"
-                                   "In this game, you will act as the government to solve the homelessness issue in San"
-                                   " Francisco. In each turn, you will be provided several choices which help you "
-                                   "solve the issue. Try to solve the problem without being overthrown by voters "
-                                   "or getting bankrupt.")
-    # help_button = tk.Button(master=CARD_FRAME, text="help", width=10, command=webbrowser.open("111.txt"))
-    # help_button.place(x=1250, y=200)
+    tk.messagebox.showinfo("Game Message", "Game title: Can You Solve Homelessness Issue in San Fransisco?\n \n"
+                                           "In this game, you will act as the government to solve the homelessness "
+                                           "issue in San Francisco. In each turn, you will be provided several choices "
+                                           "which help you solve the issue. Try to solve the problem without being "
+                                           "overthrown by voters or getting bankrupt.\n IMPORTANT: YOU MUST PRESS PREPARE "
+                                           " FOR YOUR SECOND TERM AT YOUR LAST QUARTER IN A TERM")
+    help_button = tk.Button(master=CARD_FRAME, text="HELP", command=click_on_file, activeforeground="red",
+                            activebackground="yellow")
+    help_button.place(x=1250, y=250)
+    w = tk.Label(ROOT, text="Can you solve the homelessness problem in San Fransisco?", font="Helvetica 20", fg="blue")
+    w.pack()
 
 
-def click_on_file(filename="111.txt"):
+def click_on_file(filename="operator_description.txt"):
     """Open document with default application in Python."""
     try:
         os.startfile(filename)
@@ -360,6 +365,30 @@ def render_state(s):
     global myFont
     if not myFont:
         myFont = tk.font.Font(family="Helvetica", size=18, weight="bold")
+    bad_events = ["earthquake", "flood", "tornado", "tsunami", "typhoon", "volcano eruption", "flu outbreak"]
+    good_events = ["discover a gold mine accidentally", "discover new oilfield", "receive donations from billionaire"]
+    random_num = random.randint(1, 18)
+    if random_num == 3:
+        random_event = random.randint(0, len(bad_events)-1)
+        tk.messagebox.showinfo("Game message", "A(An) " + bad_events[random_event] + " hit San Francisco!\n"
+                                                                                     "Money-300000000\n"
+                                                                                     "Health points-10\n"
+                                                                                     "Homeless people+1000\n"
+                                                                                     "Popularity-7")
+        s.money -= 300000000
+        s.health_points -= 10
+        s.homeless_people += 1000
+        s.popularity -= 7
+
+    if random_num == 7:
+        random_event = random.randint(0, len(good_events)-1)
+        tk.messagebox.showinfo("Game message", "You " + good_events[random_event] + " !\nMoney+400000000 \n"
+                                                                                    "Homeless poeple-1000\n"
+                                                                                    "popularity+7")
+        s.money += 400000000
+        s.homeless_people -= 500
+        s.popularity += 7
+
     money_bar.text = "Money\n{:,}".format(int(s.money))
     housing_price_bar.text = "Housing Price\n{:.1f}".format(s.housing_price)
     health_points_bar.text = "Health Points\n{:.1f}".format(s.health_points)
@@ -373,14 +402,17 @@ def render_state(s):
     popularity_bar.update(s.popularity / 100.0)
     homeless_people_bar.update(s.homeless_people / 25000.0)
     render_homeless_map(s.homeless_people / 15000)
-    msg_box = tk.messagebox.askquestion('Game Message', 'Do you want to check the description for each operator?'
-                                                        'Click yes if you want to.', icon='warning')
+    # msg_box = tk.messagebox.askquestion('Game Message', 'Do you want to check the description for each operator?'
+    #                                                     'Click yes if you want to.', icon='warning')
     # if msg_box == 'yes':
     #     webbrowser.open("111.txt")
-    quarter_button = tk.Button(master=CARD_FRAME, text="Quarter count = " + str(s.quarter_num), width=20)
+    quarter_button = tk.Button(master=CARD_FRAME, text="Quarter count = " + str(s.quarter_num), width=20,
+                               activeforeground="red", activebackground="yellow")
     quarter_button.place(x=1250, y=150)
-    help_button = tk.Button(master=CARD_FRAME, text="HELP", command=click_on_file)
-    help_button.place(x=1250, y=200)
+    quarter_button = tk.Button(master=CARD_FRAME, text="Quarters left = " + str(16 - s.quarter_num if s.quarter_num < 16
+                                                                                else 33 - s.quarter_num), width=20,
+                               activeforeground="red", activebackground="yellow")
+    quarter_button.place(x=1250, y=200)
     if s.is_goal():
         tk.messagebox.showerror("Game Message", s.goal_message())
 

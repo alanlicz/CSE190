@@ -1,0 +1,23 @@
+Operator description
+1.	Lower housing rental price to help partial homeless people live (money – housing price – health points + popularity +)
+2.	Build stable houses for general homeless people (money – housing price – health points + popularity + growth –)
+3.	Provide low-price or free health examines and treatments in street (money – health points + popularity +)
+4.	Help withdraw or prevent from substance abuse through medical treatment or education (money – health points + popularity +)
+5.	Academic and living support for school-aged children by communities (money – employment + popularity + growth –)
+6.	Provide training aiming to help homeless adults learn basic working skills and find job in short-term (money – housing price – health points + employment + popularity + growth –)
+7.	Directly provide simple jobs for capable homeless people through enterprises (money – health points + employment + popularity – growth –)
+8.	Increase tax income from the public in short term (money + popularity –)
+9.	Decrease tax income from the public in short term (money – popularity +)
+10.	Provide temporary living spot for homeless people in general (money – health points + popularity –)
+11.	Provide temporary spaces and basic resources for homeless people to stay or build their shelters (money – health points + popularity +)
+12.	Set policy to increase basic wage for the general public, may cause loss of job for homeless people for increasing human costs (money – housing price – employment – popularity +)
+13.	Set policy to encourage hiring homeless people, but cause unsatisfaction within the public, especially for those in enterprises (money – housing price – health points + employment+ popularity – growth –)
+14.	Make more homeless people be affordable to purchase insurance and get medical care (money – health points + popularity +)
+15.	Encourage homeless people get college education (money – health points + employment rate + popularity + growth –)
+16.	Support temporary lives for homeless people in need (money – health points +)
+17.	Enable the next term
+
+We add random event into this game.
+Bad events:Earthquake, flood, tornado, tsunami, typhoon, volcano eruption, flu outbreak
+Good events:Discover a gold mine accidentally, discover new oilfield, donations from billiona, billionaire
+
